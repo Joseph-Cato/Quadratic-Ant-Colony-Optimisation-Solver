@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.24"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Quadratic_Ant_Colony_Optimisation_Solver",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Quadratic_Ant_Colony_Optimisation_Solver::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Quadratic_Ant_Colony_Optimisation_Solver-Debug-69a7b8bc7b398a311639.json",
+					"name" : "Quadratic_Ant_Colony_Optimisation_Solver",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver/cmake-build-debug",
+		"source" : "/home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

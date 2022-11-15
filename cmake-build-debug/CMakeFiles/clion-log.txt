@@ -1,0 +1,4 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/opt/clion/bin/ninja/linux/ninja -G Ninja -S /home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver -B /home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver/cmake-build-debug
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver/cmake-build-debug
