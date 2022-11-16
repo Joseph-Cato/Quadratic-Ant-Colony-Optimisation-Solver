@@ -12,10 +12,15 @@ class Graph {
 private:
 
     std::vector<std::vector<double>> pheromone;
+    std::vector<double> initialPheromone;
     std::vector<std::vector<int>> distances;
     std::vector<std::vector<int>> flows;
-    int numberOfLocations;
-    int numberOfFacilities;
+    std::vector<std::vector<double>> heuristicMatrix;
+    double ALPHA;
+    double BETA;
+    int numberOfLocations; // == numberOfFacilities
+
+
 
     static std::vector<int> lineToVector(std::string string);
 
@@ -25,7 +30,13 @@ public:
 
     static std::mutex pheromoneMutex;
 
-    Graph();
+    Graph(double ALPHA_VALUE, double BETA_VALUE);
+
+    double getALPHA();
+
+    double getBETA();
+
+    std::vector<double> getInitialPheromone();
 
     int getDistance(int startLocation, int endLocation);
 
@@ -33,7 +44,11 @@ public:
 
     int getNumberOfLocations();
 
+    std::vector<std::vector<double>> getHeuristicMatrix();
+
     void addPheromone(std::vector<std::vector<float>> pheromoneAddition);
+
+    double getPheromone(int fromNode, int destinationNode);
 
     /*
     void printDistances() { //Testing func

@@ -6,6 +6,8 @@
 #define QUADRATIC_ANT_COLONY_OPTIMISATION_SOLVER_ANT_H
 
 #include <random>
+#include <thread>
+#include <time.h>
 #include "Graph.h"
 
 class Ant {
@@ -13,9 +15,6 @@ private:
 
     Graph graph;
     std::vector<int> tabuList;
-    std::vector<int> remainingFacilities;
-
-    std::discrete_distribution<> distribution( );
 
     void traverseGraph();
 
@@ -24,7 +23,7 @@ private:
 public:
     Ant(Graph graph1);
 
-
+    static std::vector<std::vector<float>> copyFloatVector(std::vector<std::vector<double>>);
 
 };
 

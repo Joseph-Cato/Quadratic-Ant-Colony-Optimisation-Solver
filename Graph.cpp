@@ -9,7 +9,16 @@
 
 std::mutex Graph::pheromoneMutex;
 
-Graph::Graph() {
+std::vector<std::vector<double>> Graph::getHeuristicMatrix() {
+    return Graph::heuristicMatrix;
+}
+
+
+Graph::Graph(double ALPHA_VALUE, double BETA_VALUE) {
+
+    ALPHA = ALPHA_VALUE;
+    BETA = BETA_VALUE;
+
     std::vector<int> temp;
     int lineCounter = 0;
 
@@ -23,7 +32,6 @@ Graph::Graph() {
             if (lineCounter == 0) {
                 temp = lineToVector(line);
                 numberOfLocations = temp.front();
-                numberOfFacilities = numberOfLocations;
                 lineCounter++;
 
             } else if (lineCounter > 1 && lineCounter < numberOfLocations + 2) {
@@ -47,20 +55,47 @@ Graph::Graph() {
     file.close();
 
     // Generating initial pheromone levels
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine generator(seed);
-    std::uniform_real_distribution<float> realDistribution(0.0,1.0);
     std::vector<double> pheromoneRow;
 
     for (int i = 0; i < numberOfLocations; i++) {
         for (int j = 0; j < numberOfLocations; j++) {
-            pheromoneRow.emplace_back( realDistribution(generator) );
+            if (i != j) {
+                pheromoneRow.emplace_back(1);
+            } else {
+                pheromoneRow.emplace_back(0);
+            }
         }
         pheromone.emplace_back(pheromoneRow);
         pheromoneRow.clear();
     }
 
+    for (int i = 0; i < numberOfLocations; i++) {
+        initialPheromone.emplace_back(1);
+    }
+
+    // Generating Heuristic Matrix
+    std::vector<double> heuristicRow;
+
+    for (int i = 0; i < numberOfLocations; i++) {
+        for (int j = 0; j < numberOfLocations; j++) {
+            if (i != j) {
+                heuristicRow.emplace_back( 1 / distances.at(i).at(j) );
+            } else {
+                heuristicRow.emplace_back(0);
+            }
+        }
+        heuristicMatrix.emplace_back(heuristicRow);
+        heuristicRow.clear();
+    }
 };
+
+double Graph::getBETA() {
+    return BETA;
+}
+
+double Graph::getALPHA() {
+    return ALPHA
+}
 
 std::vector<int> Graph::lineToVector(std::string string) {
     std::vector<int> vector;
@@ -85,12 +120,20 @@ std::vector<int> Graph::lineToVector(std::string string) {
 
 };
 
+std::vector<double> Graph::getInitialPheromone() {
+    return initialPheromone;
+}
+
 int Graph::getDistance(int startLocation, int endLocation) {
     return Graph::distances.at(startLocation).at(endLocation);
 }
 
 int Graph::getFlow(int startFacility, int endFacility) {
     return flows.at(startFacility).at(endFacility);
+}
+
+double Graph::getPheromone(int fromNode, int destinationNode) {
+    return pheromone[fromNode][destinationNode];
 }
 
 int Graph::getNumberOfLocations() {
