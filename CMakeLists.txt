@@ -3,7 +3,11 @@ project(Quadratic_Ant_Colony_Optimisation_Solver)
 
 set(CMAKE_CXX_STANDARD 23)
 
-include_directories(.)
+include_directories(src)
 
-add_executable(Quadratic_Ant_Colony_Optimisation_Solver
-        main.cpp Ant.cpp Ant.h Graph.cpp Graph.h)
+add_subdirectory(src)
+add_subdirectory(lib/googletest)
+add_subdirectory(test)
+
+
+
