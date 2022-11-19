@@ -9,6 +9,7 @@
 
 Ant::Ant(Graph *graph1 ){
     graph = graph1;
+    weights.reserve(50);
 }
 
 void Ant::traverseGraph() {
@@ -71,12 +72,12 @@ void Ant::traverseGraph() {
     int lastNode = firstNode;
 
     for (int iteration = 1; iteration < graph->getNumberOfLocations(); iteration++) {
+        weights.clear();
 
         std::cout << "---------------------- Iteration " << iteration << "----------------------\n";
 
 
         // calculate probabilities of going to another node
-        std::vector<double> weights;
         for (int i = 1; i < graph->getNumberOfLocations()+1; i++) {
             weights.emplace_back(  pow( (double) graph->getPheromone(lastNode, i), (double) graph->getALPHA()) * pow( (double) heuristicMatrix[i-1][lastNode-1], (double) graph->getBETA() ) );
         }
@@ -95,15 +96,15 @@ void Ant::traverseGraph() {
         std::cout << "\n\n5th Weight Values:\n    Pheromone Value: " << graph->getPheromone(lastNode, 5) << "\n   Alpha: " << graph->getALPHA();
         std::cout << "\n    Heuristic: " << heuristicMatrix[lastNode-1][4] << "\n   Beta: " << graph->getBETA() << "\n";
 
-
+            /*
         std::cout << "Weights: ";
         for (double i: weights) {
             std::cout << (double) i << ", ";
         }
-
+        */
 
         // Use probabilities as weights for new distribution and pick next node
-        std::discrete_distribution<> nextDistribution ( weights.cbegin() , weights.cend());
+        std::discrete_distribution<> nextDistribution ( weights.begin() , weights.end());
 
         std::cout << "\nProbabilities: ";
         for (int i = 0; i < 50; i++) {

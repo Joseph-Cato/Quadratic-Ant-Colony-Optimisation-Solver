@@ -15,7 +15,7 @@ private:
 
     Graph *graph;
     std::vector<int> tabuList;
-
+    std::vector<double> weights;
     void traverseGraph();
 
     void addPheromone(std::vector<std::vector<float>> pheromone);

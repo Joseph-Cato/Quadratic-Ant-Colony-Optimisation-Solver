@@ -8,7 +8,7 @@
 
 TEST(randomWalk, traverseGraphTest) {
     Graph Graph1;
-    Ant Ant1(Graph1);
+    Ant Ant1(&Graph1);
 
     ASSERT_TRUE(Ant1.getTabuList().empty());
 
