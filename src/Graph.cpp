@@ -15,7 +15,7 @@ const std::vector<std::vector<double>> & Graph::getHeuristicMatrix() {
 }
 
 
-Graph::Graph() : Graph("/home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver/res/dataSet.txt", 2, 1){
+Graph::Graph() : Graph("/home/joseph/Documents/QACO/res/dataSet.txt", 2, 1){
 }
 
 Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE) {

@@ -1,4 +1,4 @@
-# Install script for directory: /home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver/lib/googletest
+# Install script for directory: /home/joseph/Documents/QACO/lib/googletest
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,7 +44,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver/cmake-build-debug/lib/googletest/googlemock/cmake_install.cmake")
+  include("/home/joseph/Documents/QACO/cmake-build-debug/lib/googletest/googlemock/cmake_install.cmake")
 
 endif()
 

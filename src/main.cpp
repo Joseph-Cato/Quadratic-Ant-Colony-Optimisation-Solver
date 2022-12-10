@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-using namespace std;
 
 #define MAX_EVALUATIONS 10000;
 

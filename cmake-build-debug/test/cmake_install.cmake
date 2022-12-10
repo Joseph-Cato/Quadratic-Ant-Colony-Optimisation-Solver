@@ -1,4 +1,4 @@
-# Install script for directory: /home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver/test
+# Install script for directory: /home/joseph/Documents/QACO/test
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
