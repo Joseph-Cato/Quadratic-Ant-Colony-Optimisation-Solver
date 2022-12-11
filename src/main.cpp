@@ -12,7 +12,5 @@ int main() {
     Ant Ant1(&Graph1);
     Ant1.testTraverseGraph();
 
-    double n = pow( (double) 1.0, (double) 2) * pow( (double) 0.025641, (double) 1.0);
-    std::cout << "\n\n\n" << n;
     return 0;
 }

@@ -30,7 +30,7 @@ TEST(Contructor, DefaultConstructor) {
 }
 
 TEST(Contructor, OverloadedConstructor) {
-    Graph graph1("/home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver/res/dataSet.txt",5,6);
+    Graph graph1("/home/joseph/Documents/QACO/res/dataSet.txt",5,6);
 
     EXPECT_EQ(graph1.getALPHA(), 5);
     EXPECT_EQ(graph1.getBETA(), 6);

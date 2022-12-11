@@ -135,15 +135,15 @@ const std::vector<double> & Graph::getInitialPheromone() {
 }
 
 int & Graph::getDistance(int startLocation, int endLocation) {
-    return Graph::distances.at(startLocation-1).at(endLocation-1);
+    return Graph::distances.at(startLocation).at(endLocation);
 }
 
 const int & Graph::getFlow(int startFacility, int endFacility) {
-    return flows.at(startFacility-1).at(endFacility-1);
+    return flows.at(startFacility).at(endFacility);
 }
 
 const double & Graph::getPheromone(int fromNode, int destinationNode) {
-    return pheromone[fromNode-1][destinationNode-1];
+    return pheromone[fromNode][destinationNode];
 }
 
 const int & Graph::getNumberOfLocations() {

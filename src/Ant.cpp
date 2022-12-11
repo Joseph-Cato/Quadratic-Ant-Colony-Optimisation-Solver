@@ -10,6 +10,8 @@
 Ant::Ant(Graph *graph1 ){
     graph = graph1;
     weights.reserve(50);
+    tabuList.reserve(50);
+    tabuList.clear();
 }
 
 void Ant::traverseGraph() {
@@ -26,6 +28,8 @@ void Ant::traverseGraph() {
         randomGenerator = new std::mt19937 ((std::hash<std::thread::id>{} (std::this_thread::get_id() ) ) + clock() );
     }
 
+    // -------- First Step --------
+
     // Distribution for first traversal
     std::discrete_distribution<> firstDistribution( graph->getInitialPheromone().begin(),
                                                     graph->getInitialPheromone().end() );
@@ -35,97 +39,45 @@ void Ant::traverseGraph() {
     int firstNode = firstDistribution(*randomGenerator);
     tabuList.emplace_back(firstNode);
 
-    //TODO remove
-    std::cout << "---------------------- Iteration 0 ----------------------\n";
-    std::cout << "Weights: ";
-    for (double i: graph->getInitialPheromone()) {
-        std::cout << i << ", ";
-    }
-    std::cout << "\n";
-    std::cout << "Node 1: " << firstNode << "\n\n Initial Heuristic Matrix\n";
-
-    /*
-    for (int i = 0; i < 50; ++i) {
-        for (int j = 0; j < 50; ++j) {
-            std::cout << heuristicMatrix[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
-     */
-
 
     // Zero out first node column of heuristic matrix so probability of returning to that node = 0
     for (int i = 0; i < graph->getNumberOfLocations(); i++) {
-        heuristicMatrix[i][firstNode-1] = 0;
+        heuristicMatrix[i][firstNode] = 0;
     }
-
-    /*
-    std::cout << "\n\nAfter zero-ing column:\n";
-    for (int i = 0; i < 50; ++i) {
-        for (int j = 0; j < 50; ++j) {
-            std::cout << heuristicMatrix[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
-     */
 
     int lastNode = firstNode;
 
+
+    // -------- Main Loop --------
     for (int iteration = 1; iteration < graph->getNumberOfLocations(); iteration++) {
         weights.clear();
 
-        std::cout << "---------------------- Iteration " << iteration << "----------------------\n";
-
-
         // calculate probabilities of going to another node
-        for (int i = 1; i < graph->getNumberOfLocations()+1; i++) {
-            weights.emplace_back(  pow( (double) graph->getPheromone(lastNode, i), (double) graph->getALPHA()) * pow( (double) heuristicMatrix[i-1][lastNode-1], (double) graph->getBETA() ) );
+        for (int i = 0; i < graph->getNumberOfLocations(); i++) {
+            double pheromoneComponent = pow( (double) graph->getPheromone(lastNode, i), (double) graph->getALPHA());
+            double heuristicComponent = pow( heuristicMatrix[lastNode][i], (double) graph->getBETA() );
+            double weight = pheromoneComponent * heuristicComponent;
+            weights.emplace_back( weight );
         }
-
-        /*
-        std::cout << "\nHeuristic Matrix:\n\n";
-
-        for (int i = 0; i < 50; ++i) {
-            for (int j = 0; j < 50; ++j) {
-                std::cout << heuristicMatrix[i][j] << " ";
-            }
-            std::cout << "\n";
-        }
-         */
-
-        std::cout << "\n\n5th Weight Values:\n    Pheromone Value: " << graph->getPheromone(lastNode, 5) << "\n   Alpha: " << graph->getALPHA();
-        std::cout << "\n    Heuristic: " << heuristicMatrix[lastNode-1][4] << "\n   Beta: " << graph->getBETA() << "\n";
-
-            /*
-        std::cout << "Weights: ";
-        for (double i: weights) {
-            std::cout << (double) i << ", ";
-        }
-        */
 
         // Use probabilities as weights for new distribution and pick next node
         std::discrete_distribution<> nextDistribution ( weights.begin() , weights.end());
 
-        std::cout << "\nProbabilities: ";
-        for (int i = 0; i < 50; i++) {
-            std::cout << (double) nextDistribution.probabilities()[i] << ", ";
-        }
-        std::cout << "\n";
-
         int nextNode = nextDistribution( *randomGenerator );
         tabuList.emplace_back(nextNode);
 
-        std::cout << "Next Node: " << nextNode << "\n";
-
         // Zero out column [nextNode] so node is not selected again
         for (int i = 0; i < graph->getNumberOfLocations(); i++) {
-            heuristicMatrix[i][nextNode] = 0;
+            heuristicMatrix[i][nextNode] = 0; //TODO - check
         }
 
         // Resets distribution for next iteration
         nextDistribution.reset();
         weights.clear();
 
+
+        // Sets next node as last node for next loop iteration
+        lastNode = nextNode;
 
     }
 
