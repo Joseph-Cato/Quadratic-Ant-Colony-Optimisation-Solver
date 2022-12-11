@@ -1,0 +1,1 @@
+/usr/bin/gcc  -Wall -Wextra -lm -lstdc++ -g CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver.dir/main.cpp.o CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver.dir/Ant.cpp.o CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver.dir/Graph.cpp.o -o Quadratic_Ant_Colony_Optimisation_Solver 

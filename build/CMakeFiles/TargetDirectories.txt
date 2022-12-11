@@ -1,0 +1,3 @@
+/home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver/build/CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver.dir
+/home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver/build/CMakeFiles/edit_cache.dir
+/home/joseph/Documents/Quadratic-Ant-Colony-Optimisation-Solver/build/CMakeFiles/rebuild_cache.dir

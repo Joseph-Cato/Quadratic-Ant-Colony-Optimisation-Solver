@@ -1,0 +1,2 @@
+/usr/bin/ar qc libQuadratic_Ant_Colony_Optimisation_Solver_lib.a CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver_lib.dir/main.cpp.o CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver_lib.dir/Ant.cpp.o CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver_lib.dir/Graph.cpp.o
+/usr/bin/ranlib libQuadratic_Ant_Colony_Optimisation_Solver_lib.a
