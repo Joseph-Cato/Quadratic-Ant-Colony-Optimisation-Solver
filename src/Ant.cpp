@@ -9,8 +9,6 @@
 
 Ant::Ant(Graph *graph1 ){
     graph = graph1;
-    weights.reserve(50);
-    tabuList.reserve(50);
     tabuList.clear();
 }
 
@@ -18,7 +16,7 @@ void Ant::traverseGraph() {
     //TODO - create more efficient sampler (discrete distribution without replacement) https://www.sciencedirect.com/science/article/abs/pii/S002001900500298X?via%3Dihub
 
     // Getting and configuring heuristic matrix
-    std::vector<std::vector<double>> heuristicMatrix;
+    std::vector<std::vector<float>> heuristicMatrix;
     heuristicMatrix = graph->getHeuristicMatrix();
 
     // Randomness
@@ -78,26 +76,36 @@ void Ant::traverseGraph() {
 
         // Sets next node as last node for next loop iteration
         lastNode = nextNode;
-
     }
-
     // Avoiding memory leak
-    delete(randomGenerator);
+    //delete(randomGenerator); //TODO - check
 }
 
-void Ant::addPheromone(std::vector<std::vector<float>> pheromone) {
-    Graph::pheromoneMutex.lock();
-    graph->addPheromone(std::move(pheromone));
-    Graph::pheromoneMutex.unlock();
+float Ant::calculateInverseCost() {
+    int totalCost = 0;
+    for (int i = 0; i < graph->getNumberOfLocations()-1; i++) {
+        // Cost is distance * flow
+        totalCost += graph->getDistance(tabuList.at(i), tabuList.at(i+1)) * graph->getFlow(tabuList.at(i), tabuList.at(i+1));
+    }
+    // Returns inverse so to minimise cost we find the highest calculateInverseCost for any tabuList
+    return ((float) 1 / (float) totalCost);
 }
 
 std::vector<int> Ant::getTabuList() {
+    traverseGraph();
     return tabuList;
 }
 
-// TODO - remove
-void Ant::testTraverseGraph() {
-    traverseGraph();
+
+void Ant::updatePartialPheromone(float inverseCost) {
+    graph->pheromoneMutex.lock();
+    graph->addPartialPheromone(inverseCost, tabuList);
+    graph->pheromoneMutex.unlock();
 }
+
+
+
+
+
 
 

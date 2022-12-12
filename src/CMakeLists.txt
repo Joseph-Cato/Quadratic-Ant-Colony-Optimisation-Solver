@@ -5,6 +5,6 @@ add_executable(Quadratic_Ant_Colony_Optimisation_Solver
 
 set(SOURCES ${SOURCES})
 
-add_executable(${BINARY}_run main.cpp Ant.h Ant.cpp Graph.h Graph.cpp )
+add_executable(${BINARY}_run main.cpp Ant.h Ant.cpp Graph.h Graph.cpp ../lib/CTPL/ctpl_stl.h ../lib/CTPL/ctpl.h)
 
-add_library(${BINARY}_lib STATIC main.cpp Ant.h Ant.cpp Graph.h Graph.cpp )
+add_library(${BINARY}_lib STATIC main.cpp Ant.h Ant.cpp Graph.h Graph.cpp ../lib/CTPL/ctpl_stl.h ../lib/CTPL/ctpl.h)
