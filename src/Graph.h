@@ -47,7 +47,7 @@ public:
 
     [[nodiscard]] const std::vector<std::vector<float>> & getHeuristicMatrix();
 
-    void addPartialPheromone(std::vector<std::vector<float>> pheromoneAddition);
+    void addPartialPheromone(float inverseCost, std::vector<int> tabuList);
 
     [[nodiscard]] float getPheromone(int fromNode, int destinationNode);
 
@@ -55,7 +55,7 @@ public:
 
     std::vector<std::vector<float>> getPartialPheromone();
 
-    void addPheromone(std::vector<std::vector<float>> pheromoneAddition);
+    void addPheromone();
 
 };
 

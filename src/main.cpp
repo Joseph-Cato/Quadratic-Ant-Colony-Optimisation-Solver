@@ -15,7 +15,7 @@ std::mutex solutionMutex;
 
 
 void antSolve(int ithread) {
-    std::cout << "In main::antSolve ";
+    // Note that int parameter "ithread" is need for CTPL thread pool
 
     // Creates ant object
     Ant ant(&graphInstance);
@@ -23,13 +23,10 @@ void antSolve(int ithread) {
     // traverses graph
     ant.traverseGraph();
 
-
-
     // Retrives values from graph traversal
     float inverseCost = ant.calculateInverseCost();
     std::vector<int> tabuList = ant.getTabuList();
 
-    std::cout << "\ninverse cost of tabu list: " << inverseCost << "\n";
 
     // checks if solution is best
     // TODO - put outside thread?
@@ -40,10 +37,8 @@ void antSolve(int ithread) {
     }
     solutionMutex.unlock();
 
-    std::cout << "\n new best inverse cost: " << bestSolutionInverseCost << "\n";
-
-    //Updates Pheromone
-    ant.updatePheromone(inverseCost);
+    //Updates Partial Pheromone
+    ant.updatePartialPheromone(inverseCost);
 }
 
 int solve(const std::string& filePath, int ants, float evapRate, int evaluations, double alpha, double beta, int threads) {
@@ -64,33 +59,29 @@ int solve(const std::string& filePath, int ants, float evapRate, int evaluations
     // Runs single evaluations till max evaluations have been reached
     for (int evaluation = 0; evaluation < evaluations; ++evaluation) {
 
-        // Assigns ant work to CTPL thread pool
+        // Assigns antSolve function to CTPL thread pool queue
         for (int i = 0; i < ants; i++){
             p.push(antSolve);
         }
 
-        // Wait for threads to complete
+        // Wait for threads to complete work
         p.stop(true);
 
         // Evaporate pheromone
         graph.evaporatePheromone(evapRate);
 
-        try {
-            // Add partial pheromone to total pheromone
-            graph.addPheromone(graph.getPartialPheromone()); //TODO - this line breaks everything
-        } catch (std::out_of_range e) {
-            std::cout << "\nWarning: \n";
-            std::cout << e.what();
-        }
+        // Add partial pheromone to total pheromone
+        graph.addPheromone(); //TODO - this line breaks everything
+
     }
 
     auto stop = std::chrono::steady_clock::now();
     std::chrono::duration<double> diff = stop - start;
 
     std::cout << "Done\n";
-    std::cout << "\nFound an optimal path of cost " << (bestSolutionInverseCost/1) << " in ";
+    std::cout << "\nIn "<< evaluations << " evaluations found optimal path of cost " << (bestSolutionInverseCost/1) << " in ";
     std::cout <<  diff.count() << "s\n";
-    std::cout << "Best solution ([value] facility at [index] location:\n";
+    std::cout << "Best solution ([value] facility at [index] location):\n";
     std::cout << "[ ";
     for (unsigned long i = 0; i < bestSolutionTabuList.size()-1; i++) {
         std::cout << bestSolutionTabuList[i] << ", ";

@@ -28,11 +28,11 @@ public:
 
     [[nodiscard]] std::vector<int> getTabuList();
 
-    void addPheromone(std::vector<std::vector<float>> pheromone);
+    void updatePartialPheromone(float inverseCost);
 
     float calculateInverseCost();
 
-    void updatePheromone(float inverseCost);
+
 
 };
 

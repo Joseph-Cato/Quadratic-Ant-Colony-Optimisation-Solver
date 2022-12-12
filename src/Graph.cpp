@@ -20,8 +20,6 @@ Graph::Graph() : Graph("/home/joseph/Documents/QACO/res/dataSet.txt", 2, 1){
 Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE) {
 
     pheromone.clear();
-    partialPheromone.clear();
-    partialPheromone.resize(50);
 
     ALPHA = ALPHA_VALUE;
     BETA = BETA_VALUE;
@@ -62,6 +60,9 @@ Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE)
     file.close();
 
     pheromone.clear();
+
+    //TODO combine for loop below into one?
+
     // Generating initial pheromone levels
     std::vector<float> pheromoneRow;
 
@@ -101,6 +102,16 @@ Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE)
         heuristicRow.clear();
     }
 
+    // Generating partial pheromone
+    std::vector<float> partialPheromoneRow;
+
+    for (int i = 0; i < numberOfLocations; i++) {
+        for (int j = 0; j < numberOfLocations; j++) {
+            partialPheromoneRow.emplace_back(0);
+        }
+        partialPheromone.emplace_back(partialPheromoneRow);
+        partialPheromoneRow.clear();
+    }
 }
 
 double Graph::getBETA() const {
@@ -154,13 +165,10 @@ const int & Graph::getNumberOfLocations() const {
     return numberOfLocations;
 }
 
-void Graph::addPheromone(std::vector<std::vector<float>> pheromoneAddition) { //TODO - could just add pheromone from ant::updatePheromone
+void Graph::addPheromone() { //TODO - could just add pheromone from ant::updatePheromone
     for (int i = 0; i < numberOfLocations; i++) {
-        for (int j = 0; j <numberOfLocations; j++) {
-            std::cout << "\n pheromone: " << pheromone.at(i).at(j);
-            std::cout << "\n addition : " << pheromoneAddition.at(i).at(j);
-            float newPheromoneValue = pheromone.at(i).at(j) + pheromoneAddition.at(i).at(j);
-            pheromone.at(i).at(j) = newPheromoneValue;
+        for (int j = 0; j < numberOfLocations; j++) {
+            pheromone.at(i).at(j) += partialPheromone.at(i).at(j);
         }
     }
 }
@@ -173,13 +181,12 @@ void Graph::evaporatePheromone(float evapRate) {
     }
 }
 
-void Graph::addPartialPheromone(std::vector<std::vector<float>> pheromoneAddition) {
-    for (int i = 0; i < numberOfLocations; i++) {
-        for (int j = 0; j < numberOfLocations; j++) {
-            float newPheromoneValue = partialPheromone.at(i).at(j) + pheromoneAddition.at(i).at(j);
-            partialPheromone.at(i).at(j) += newPheromoneValue;
-        }
+void Graph::addPartialPheromone(float inverseCost, std::vector<int> tabuList) {
+
+    for (int i = 0; i < (int) tabuList.size(); i += 2) {
+        partialPheromone[ tabuList[i] ][ tabuList[i+1] ] += inverseCost;
     }
+
 }
 
 std::vector<std::vector<float>> Graph::getPartialPheromone() {
