@@ -8,17 +8,17 @@
 #include "Ant.h"
 
 Ant::Ant(Graph *graph1 ){
+    std::cout << "Creating ant object";
     graph = graph1;
-    weights.reserve(50);
-    tabuList.reserve(50);
     tabuList.clear();
 }
 
 void Ant::traverseGraph() {
     //TODO - create more efficient sampler (discrete distribution without replacement) https://www.sciencedirect.com/science/article/abs/pii/S002001900500298X?via%3Dihub
+    std::cout << "Ant::traverseGraph()";
 
     // Getting and configuring heuristic matrix
-    std::vector<std::vector<double>> heuristicMatrix;
+    std::vector<std::vector<float>> heuristicMatrix;
     heuristicMatrix = graph->getHeuristicMatrix();
 
     // Randomness
@@ -78,11 +78,15 @@ void Ant::traverseGraph() {
 
         // Sets next node as last node for next loop iteration
         lastNode = nextNode;
-
     }
 
+    std::cout << "Found tabuList: \n";
+    for (int i = 0; i < 50; i++) {
+        std::cout << tabuList[i] << " ";
+    }
+    std::cout << "\n";
     // Avoiding memory leak
-    delete(randomGenerator);
+    //delete(randomGenerator); //TODO - check
 }
 
 void Ant::addPheromone(std::vector<std::vector<float>> pheromone) {
@@ -91,13 +95,60 @@ void Ant::addPheromone(std::vector<std::vector<float>> pheromone) {
     Graph::pheromoneMutex.unlock();
 }
 
+float Ant::calculateInverseCost() {
+    int totalCost = 0;
+    for (int i = 0; i < graph->getNumberOfLocations()-1; i++) {
+        // Cost is distance * flow
+        totalCost += graph->getDistance(tabuList.at(i), tabuList.at(i+1) * graph->getFlow(tabuList.at(i), tabuList.at(i+1)));
+    }
+    // Returns inverse so to minimise cost we find the highest calculateInverseCost for any tabuList
+    return ((float) 1 / (float) totalCost);
+}
+
 std::vector<int> Ant::getTabuList() {
+    traverseGraph();
     return tabuList;
 }
 
-// TODO - remove
-void Ant::testTraverseGraph() {
-    traverseGraph();
+void Ant::updatePheromone(float inverseCost) {
+    std::cout << "\nAnt::updarePheromone( " << inverseCost << " )\n";
+
+    // So for loops know when to stop without calling getter multiple times
+    int numOfValues = graph->getNumberOfLocations();
+
+    // Pads matrix with zeros
+    pheromoneAddition = std::vector<std::vector<float>>(50);
+    std::vector<float> pheromoneRow = std::vector<float>(50);
+    /*
+    for (int i = 0; i < numOfValues; i++) {
+        for (int j = 0; j < numOfValues; j++) {
+            pheromoneRow.emplace_back( 0 );
+        }
+        pheromoneAddition.emplace_back(pheromoneRow);
+    }
+     */
+    std::cout << "vector size " << pheromoneAddition.size() << "\n";
+
+    for (int i = 0; i < numOfValues; ++i) {
+        pheromoneAddition[i][tabuList[i]] = inverseCost;
+    }
+
+    std::cout << "\n\n Printing pheromone addition (ant.ccp line 127):\n"; //TODO - remove
+    for (int i = 0; i < numOfValues; i++) {
+        for (int j = 0; j < numOfValues; j++) {
+            std::cout << pheromoneAddition[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+
+    Graph::pheromoneMutex.lock();
+    graph->addPartialPheromone(pheromoneAddition);
+    Graph::pheromoneMutex.unlock();
 }
+
+
+
+
+
 
 

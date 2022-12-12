@@ -11,11 +11,12 @@
 class Graph {
 private:
 
-    std::vector<std::vector<double>> pheromone;
-    std::vector<double> initialPheromone;
+    std::vector<std::vector<float>> pheromone;
+    std::vector<std::vector<float>> partialPheromone;
+    std::vector<float> initialPheromone;
     std::vector<std::vector<int>> distances;
     std::vector<std::vector<int>> flows;
-    std::vector<std::vector<double>> heuristicMatrix;
+    std::vector<std::vector<float>> heuristicMatrix;
     double ALPHA;
     double BETA;
     int numberOfLocations; // == numberOfFacilities
@@ -23,7 +24,6 @@ private:
 
 
     static std::vector<int> lineToVector(const std::string& string);
-
 
 
 public:
@@ -37,39 +37,25 @@ public:
 
     [[nodiscard]] double getBETA() const;
 
-    [[nodiscard]] const std::vector<double> & getInitialPheromone();
+    [[nodiscard]] const std::vector<float> & getInitialPheromone();
 
     [[nodiscard]] int & getDistance(int startLocation, int endLocation);
 
     [[nodiscard]] const int & getFlow(int startFacility, int endFacility);
 
-    [[nodiscard]] const int & getNumberOfLocations();
+    [[nodiscard]] const int & getNumberOfLocations() const;
 
-    [[nodiscard]] const std::vector<std::vector<double>> & getHeuristicMatrix();
+    [[nodiscard]] const std::vector<std::vector<float>> & getHeuristicMatrix();
+
+    void addPartialPheromone(std::vector<std::vector<float>> pheromoneAddition);
+
+    [[nodiscard]] float getPheromone(int fromNode, int destinationNode);
+
+    void evaporatePheromone(float evapRate);
+
+    std::vector<std::vector<float>> getPartialPheromone();
 
     void addPheromone(std::vector<std::vector<float>> pheromoneAddition);
-
-    [[nodiscard]] const double & getPheromone(int fromNode, int destinationNode);
-
-    /*
-    void printDistances() { //Testing func
-        for (int i = 0; i < numberOfLocations; i++) {
-            for (int j = 0; j < numberOfLocations; j++) {
-                std::cout << getDistance(i,j) << " ";
-            }
-            std::cout << "\n";
-        }
-    }
-
-    void printFlows() { //Testing fun
-        for (int i = 0; i < numberOfLocations; i++) {
-            for (int j = 0; j < numberOfLocations; j++) {
-                std::cout << getFlow(i,j) << " ";
-            }
-            std::cout << "\n";
-        }
-    }
-     */
 
 };
 

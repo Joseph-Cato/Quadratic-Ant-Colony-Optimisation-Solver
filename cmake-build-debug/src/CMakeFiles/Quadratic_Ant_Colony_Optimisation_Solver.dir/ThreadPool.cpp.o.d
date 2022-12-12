@@ -1,7 +1,9 @@
-src/CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver_lib.dir/main.cpp.o: \
- /home/joseph/Documents/QACO/src/main.cpp /usr/include/stdc-predef.h \
- /home/joseph/Documents/QACO/src/Graph.h /usr/include/c++/12.2.0/vector \
- /usr/include/c++/12.2.0/bits/stl_algobase.h \
+src/CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver.dir/ThreadPool.cpp.o: \
+ /home/joseph/Documents/QACO/src/ThreadPool.cpp \
+ /usr/include/stdc-predef.h /home/joseph/Documents/QACO/src/ThreadPool.h \
+ /usr/include/c++/12.2.0/mutex /usr/include/c++/12.2.0/tuple \
+ /usr/include/c++/12.2.0/bits/stl_pair.h \
+ /usr/include/c++/12.2.0/type_traits \
  /usr/include/c++/12.2.0/x86_64-pc-linux-gnu/bits/c++config.h \
  /usr/include/c++/12.2.0/x86_64-pc-linux-gnu/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -10,52 +12,18 @@ src/CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver_lib.dir/main.cpp.o: \
  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
  /usr/include/c++/12.2.0/x86_64-pc-linux-gnu/bits/cpu_defines.h \
  /usr/include/c++/12.2.0/pstl/pstl_config.h \
- /usr/include/c++/12.2.0/bits/functexcept.h \
- /usr/include/c++/12.2.0/bits/exception_defines.h \
- /usr/include/c++/12.2.0/bits/cpp_type_traits.h \
- /usr/include/c++/12.2.0/ext/type_traits.h \
- /usr/include/c++/12.2.0/ext/numeric_traits.h \
- /usr/include/c++/12.2.0/bits/stl_pair.h \
- /usr/include/c++/12.2.0/type_traits /usr/include/c++/12.2.0/bits/move.h \
+ /usr/include/c++/12.2.0/bits/move.h \
  /usr/include/c++/12.2.0/bits/utility.h /usr/include/c++/12.2.0/compare \
  /usr/include/c++/12.2.0/concepts \
- /usr/include/c++/12.2.0/bits/stl_iterator_base_types.h \
- /usr/include/c++/12.2.0/bits/iterator_concepts.h \
- /usr/include/c++/12.2.0/bits/ptr_traits.h \
- /usr/include/c++/12.2.0/bits/ranges_cmp.h \
- /usr/include/c++/12.2.0/bits/stl_iterator_base_funcs.h \
- /usr/include/c++/12.2.0/bits/concept_check.h \
- /usr/include/c++/12.2.0/debug/assertions.h \
- /usr/include/c++/12.2.0/bits/stl_iterator.h /usr/include/c++/12.2.0/new \
- /usr/include/c++/12.2.0/bits/exception.h \
- /usr/include/c++/12.2.0/bits/stl_construct.h \
- /usr/include/c++/12.2.0/debug/debug.h \
- /usr/include/c++/12.2.0/bits/predefined_ops.h \
- /usr/include/c++/12.2.0/bits/allocator.h \
- /usr/include/c++/12.2.0/x86_64-pc-linux-gnu/bits/c++allocator.h \
- /usr/include/c++/12.2.0/bits/new_allocator.h \
- /usr/include/c++/12.2.0/bits/memoryfwd.h \
- /usr/include/c++/12.2.0/bits/stl_uninitialized.h \
- /usr/include/c++/12.2.0/ext/alloc_traits.h \
- /usr/include/c++/12.2.0/bits/alloc_traits.h \
- /usr/include/c++/12.2.0/bits/stl_vector.h \
- /usr/include/c++/12.2.0/initializer_list \
- /usr/include/c++/12.2.0/bits/stl_bvector.h \
- /usr/include/c++/12.2.0/bits/functional_hash.h \
- /usr/include/c++/12.2.0/bits/hash_bytes.h \
- /usr/include/c++/12.2.0/bits/refwrap.h \
- /usr/include/c++/12.2.0/bits/invoke.h \
- /usr/include/c++/12.2.0/bits/stl_function.h \
- /usr/include/c++/12.2.0/backward/binders.h \
- /usr/include/c++/12.2.0/bits/range_access.h \
- /usr/include/c++/12.2.0/bits/vector.tcc /usr/include/c++/12.2.0/mutex \
- /usr/include/c++/12.2.0/tuple \
  /usr/include/c++/12.2.0/bits/uses_allocator.h \
- /usr/include/c++/12.2.0/exception \
+ /usr/include/c++/12.2.0/bits/invoke.h /usr/include/c++/12.2.0/exception \
+ /usr/include/c++/12.2.0/bits/exception.h \
  /usr/include/c++/12.2.0/bits/exception_ptr.h \
+ /usr/include/c++/12.2.0/bits/exception_defines.h \
  /usr/include/c++/12.2.0/bits/cxxabi_init_exception.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/stddef.h \
  /usr/include/c++/12.2.0/typeinfo \
+ /usr/include/c++/12.2.0/bits/hash_bytes.h /usr/include/c++/12.2.0/new \
  /usr/include/c++/12.2.0/bits/nested_exception.h \
  /usr/include/c++/12.2.0/system_error \
  /usr/include/c++/12.2.0/x86_64-pc-linux-gnu/bits/error_constants.h \
@@ -64,6 +32,7 @@ src/CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver_lib.dir/main.cpp.o: \
  /usr/include/asm/errno.h /usr/include/asm-generic/errno.h \
  /usr/include/asm-generic/errno-base.h /usr/include/bits/types/error_t.h \
  /usr/include/c++/12.2.0/iosfwd /usr/include/c++/12.2.0/bits/stringfwd.h \
+ /usr/include/c++/12.2.0/bits/memoryfwd.h \
  /usr/include/c++/12.2.0/bits/postypes.h /usr/include/c++/12.2.0/cwchar \
  /usr/include/wchar.h /usr/include/bits/libc-header-start.h \
  /usr/include/bits/floatn.h /usr/include/bits/floatn-common.h \
@@ -75,11 +44,24 @@ src/CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver_lib.dir/main.cpp.o: \
  /usr/include/bits/types/__locale_t.h /usr/include/c++/12.2.0/stdexcept \
  /usr/include/c++/12.2.0/string \
  /usr/include/c++/12.2.0/bits/char_traits.h \
+ /usr/include/c++/12.2.0/bits/stl_construct.h \
+ /usr/include/c++/12.2.0/bits/stl_iterator_base_types.h \
+ /usr/include/c++/12.2.0/bits/iterator_concepts.h \
+ /usr/include/c++/12.2.0/bits/ptr_traits.h \
+ /usr/include/c++/12.2.0/bits/ranges_cmp.h \
+ /usr/include/c++/12.2.0/bits/stl_iterator_base_funcs.h \
+ /usr/include/c++/12.2.0/bits/concept_check.h \
+ /usr/include/c++/12.2.0/debug/assertions.h \
  /usr/include/c++/12.2.0/cstdint \
  /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/types.h \
  /usr/include/bits/typesizes.h /usr/include/bits/time64.h \
  /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
+ /usr/include/c++/12.2.0/bits/allocator.h \
+ /usr/include/c++/12.2.0/x86_64-pc-linux-gnu/bits/c++allocator.h \
+ /usr/include/c++/12.2.0/bits/new_allocator.h \
+ /usr/include/c++/12.2.0/bits/functexcept.h \
+ /usr/include/c++/12.2.0/bits/cpp_type_traits.h \
  /usr/include/c++/12.2.0/bits/localefwd.h \
  /usr/include/c++/12.2.0/x86_64-pc-linux-gnu/bits/c++locale.h \
  /usr/include/c++/12.2.0/clocale /usr/include/locale.h \
@@ -88,8 +70,22 @@ src/CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver_lib.dir/main.cpp.o: \
  /usr/include/bits/endianness.h \
  /usr/include/c++/12.2.0/bits/ostream_insert.h \
  /usr/include/c++/12.2.0/bits/cxxabi_forced.h \
+ /usr/include/c++/12.2.0/bits/stl_iterator.h \
+ /usr/include/c++/12.2.0/ext/type_traits.h \
+ /usr/include/c++/12.2.0/bits/stl_function.h \
+ /usr/include/c++/12.2.0/backward/binders.h \
+ /usr/include/c++/12.2.0/ext/numeric_traits.h \
+ /usr/include/c++/12.2.0/bits/stl_algobase.h \
+ /usr/include/c++/12.2.0/debug/debug.h \
+ /usr/include/c++/12.2.0/bits/predefined_ops.h \
+ /usr/include/c++/12.2.0/bits/refwrap.h \
+ /usr/include/c++/12.2.0/bits/range_access.h \
+ /usr/include/c++/12.2.0/initializer_list \
  /usr/include/c++/12.2.0/bits/basic_string.h \
+ /usr/include/c++/12.2.0/ext/alloc_traits.h \
+ /usr/include/c++/12.2.0/bits/alloc_traits.h \
  /usr/include/c++/12.2.0/string_view \
+ /usr/include/c++/12.2.0/bits/functional_hash.h \
  /usr/include/c++/12.2.0/bits/ranges_base.h \
  /usr/include/c++/12.2.0/bits/max_size_type.h \
  /usr/include/c++/12.2.0/numbers \
@@ -133,36 +129,17 @@ src/CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver_lib.dir/main.cpp.o: \
  /usr/include/c++/12.2.0/bits/unique_lock.h \
  /usr/include/c++/12.2.0/ext/atomicity.h \
  /usr/include/c++/12.2.0/x86_64-pc-linux-gnu/bits/atomic_word.h \
- /usr/include/sys/single_threaded.h /home/joseph/Documents/QACO/src/Ant.h \
- /usr/include/c++/12.2.0/random /usr/include/c++/12.2.0/cmath \
- /usr/include/math.h /usr/include/bits/math-vector.h \
- /usr/include/bits/libm-simd-decl-stubs.h \
- /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
- /usr/include/bits/fp-fast.h \
- /usr/include/bits/mathcalls-helper-functions.h \
- /usr/include/bits/mathcalls.h /usr/include/bits/mathcalls-narrow.h \
- /usr/include/bits/iscanonical.h /usr/include/c++/12.2.0/bits/specfun.h \
- /usr/include/c++/12.2.0/tr1/gamma.tcc \
- /usr/include/c++/12.2.0/tr1/special_function_util.h \
- /usr/include/c++/12.2.0/tr1/bessel_function.tcc \
- /usr/include/c++/12.2.0/tr1/beta_function.tcc \
- /usr/include/c++/12.2.0/tr1/ell_integral.tcc \
- /usr/include/c++/12.2.0/tr1/exp_integral.tcc \
- /usr/include/c++/12.2.0/tr1/hypergeometric.tcc \
- /usr/include/c++/12.2.0/tr1/legendre_function.tcc \
- /usr/include/c++/12.2.0/tr1/modified_bessel_func.tcc \
- /usr/include/c++/12.2.0/tr1/poly_hermite.tcc \
- /usr/include/c++/12.2.0/tr1/poly_laguerre.tcc \
- /usr/include/c++/12.2.0/tr1/riemann_zeta.tcc \
- /usr/include/c++/12.2.0/bits/random.h \
- /usr/include/c++/12.2.0/bits/uniform_int_dist.h \
- /usr/include/c++/12.2.0/x86_64-pc-linux-gnu/bits/opt_random.h \
- /usr/include/c++/12.2.0/bits/random.tcc /usr/include/c++/12.2.0/numeric \
- /usr/include/c++/12.2.0/bits/stl_numeric.h /usr/include/c++/12.2.0/bit \
- /usr/include/c++/12.2.0/pstl/glue_numeric_defs.h \
- /usr/include/c++/12.2.0/pstl/execution_defs.h \
- /usr/include/c++/12.2.0/thread /usr/include/c++/12.2.0/stop_token \
- /usr/include/c++/12.2.0/atomic \
+ /usr/include/sys/single_threaded.h /usr/include/c++/12.2.0/queue \
+ /usr/include/c++/12.2.0/deque \
+ /usr/include/c++/12.2.0/bits/stl_uninitialized.h \
+ /usr/include/c++/12.2.0/bits/stl_deque.h \
+ /usr/include/c++/12.2.0/bits/deque.tcc /usr/include/c++/12.2.0/vector \
+ /usr/include/c++/12.2.0/bits/stl_vector.h \
+ /usr/include/c++/12.2.0/bits/stl_bvector.h \
+ /usr/include/c++/12.2.0/bits/vector.tcc \
+ /usr/include/c++/12.2.0/bits/stl_heap.h \
+ /usr/include/c++/12.2.0/bits/stl_queue.h /usr/include/c++/12.2.0/thread \
+ /usr/include/c++/12.2.0/stop_token /usr/include/c++/12.2.0/atomic \
  /usr/include/c++/12.2.0/bits/atomic_base.h \
  /usr/include/c++/12.2.0/bits/atomic_lockfree_defines.h \
  /usr/include/c++/12.2.0/bits/atomic_wait.h \
@@ -202,25 +179,24 @@ src/CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver_lib.dir/main.cpp.o: \
  /usr/include/c++/12.2.0/bits/atomic_timed_wait.h \
  /usr/include/c++/12.2.0/bits/this_thread_sleep.h /usr/include/sys/time.h \
  /usr/include/semaphore.h /usr/include/bits/semaphore.h \
- /usr/include/c++/12.2.0/iostream /usr/include/c++/12.2.0/istream \
- /usr/include/c++/12.2.0/bits/istream.tcc \
- /usr/include/c++/12.2.0/filesystem /usr/include/c++/12.2.0/bits/fs_fwd.h \
- /usr/include/c++/12.2.0/bits/fs_path.h /usr/include/c++/12.2.0/locale \
- /usr/include/c++/12.2.0/bits/locale_facets_nonio.h \
- /usr/include/c++/12.2.0/x86_64-pc-linux-gnu/bits/time_members.h \
- /usr/include/c++/12.2.0/x86_64-pc-linux-gnu/bits/messages_members.h \
- /usr/include/libintl.h /usr/include/c++/12.2.0/bits/codecvt.h \
- /usr/include/c++/12.2.0/bits/locale_facets_nonio.tcc \
- /usr/include/c++/12.2.0/bits/locale_conv.h \
- /usr/include/c++/12.2.0/iomanip \
- /usr/include/c++/12.2.0/bits/quoted_string.h \
- /usr/include/c++/12.2.0/sstream /usr/include/c++/12.2.0/bits/sstream.tcc \
- /usr/include/c++/12.2.0/codecvt \
- /usr/include/c++/12.2.0/ext/concurrence.h \
+ /usr/include/c++/12.2.0/condition_variable \
  /usr/include/c++/12.2.0/bits/shared_ptr.h \
  /usr/include/c++/12.2.0/bits/shared_ptr_base.h \
  /usr/include/c++/12.2.0/bits/allocated_ptr.h \
  /usr/include/c++/12.2.0/ext/aligned_buffer.h \
- /usr/include/c++/12.2.0/bits/align.h \
- /usr/include/c++/12.2.0/bits/fs_dir.h \
- /usr/include/c++/12.2.0/bits/fs_ops.h /usr/include/c++/12.2.0/chrono
+ /usr/include/c++/12.2.0/ext/concurrence.h /usr/include/c++/12.2.0/bit \
+ /usr/include/c++/12.2.0/bits/align.h /usr/include/c++/12.2.0/functional \
+ /usr/include/c++/12.2.0/bits/std_function.h \
+ /usr/include/c++/12.2.0/unordered_map \
+ /usr/include/c++/12.2.0/bits/hashtable.h \
+ /usr/include/c++/12.2.0/bits/hashtable_policy.h \
+ /usr/include/c++/12.2.0/bits/enable_special_members.h \
+ /usr/include/c++/12.2.0/bits/node_handle.h \
+ /usr/include/c++/12.2.0/bits/unordered_map.h \
+ /usr/include/c++/12.2.0/bits/erase_if.h /usr/include/c++/12.2.0/array \
+ /usr/include/c++/12.2.0/bits/stl_algo.h \
+ /usr/include/c++/12.2.0/bits/algorithmfwd.h \
+ /usr/include/c++/12.2.0/bits/stl_tempbuf.h \
+ /usr/include/c++/12.2.0/bits/uniform_int_dist.h \
+ /usr/include/c++/12.2.0/bits/move_only_function.h \
+ /usr/include/c++/12.2.0/bits/mofunc_impl.h

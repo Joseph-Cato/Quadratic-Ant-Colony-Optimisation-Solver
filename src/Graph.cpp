@@ -10,15 +10,18 @@
 
 std::mutex Graph::pheromoneMutex;
 
-const std::vector<std::vector<double>> & Graph::getHeuristicMatrix() {
+const std::vector<std::vector<float>> & Graph::getHeuristicMatrix() {
     return Graph::heuristicMatrix;
 }
-
 
 Graph::Graph() : Graph("/home/joseph/Documents/QACO/res/dataSet.txt", 2, 1){
 }
 
 Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE) {
+
+    pheromone.clear();
+    partialPheromone.clear();
+    partialPheromone.resize(50);
 
     ALPHA = ALPHA_VALUE;
     BETA = BETA_VALUE;
@@ -58,8 +61,9 @@ Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE)
 
     file.close();
 
+    pheromone.clear();
     // Generating initial pheromone levels
-    std::vector<double> pheromoneRow;
+    std::vector<float> pheromoneRow;
 
     for (int i = 0; i < numberOfLocations; i++) {
         for (int j = 0; j < numberOfLocations; j++) {
@@ -78,7 +82,7 @@ Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE)
     }
 
     // Generating Heuristic Matrix
-    std::vector<double> heuristicRow;
+    std::vector<float> heuristicRow;
 
     for (int i = 0; i < numberOfLocations; i++) {
         for (int j = 0; j < numberOfLocations; j++) {
@@ -89,7 +93,7 @@ Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE)
                 if (distance == 0) {
                     heuristicRow.emplace_back(0);
                 } else {
-                    heuristicRow.emplace_back((double) 1.0 / distances.at(i).at(j));
+                    heuristicRow.emplace_back((float) (1.0 / distances.at(i).at(j)));
                 }
             }
         }
@@ -130,7 +134,7 @@ std::vector<int> Graph::lineToVector(const std::string& string) {
 
 }
 
-const std::vector<double> & Graph::getInitialPheromone() {
+const std::vector<float> & Graph::getInitialPheromone() {
     return initialPheromone;
 }
 
@@ -142,19 +146,42 @@ const int & Graph::getFlow(int startFacility, int endFacility) {
     return flows.at(startFacility).at(endFacility);
 }
 
-const double & Graph::getPheromone(int fromNode, int destinationNode) {
-    return pheromone[fromNode][destinationNode];
+float  Graph::getPheromone(int fromNode, int destinationNode) {
+    return pheromone.at(fromNode).at(destinationNode);
 }
 
-const int & Graph::getNumberOfLocations() {
+const int & Graph::getNumberOfLocations() const {
     return numberOfLocations;
 }
 
-void Graph::addPheromone(std::vector<std::vector<float>> pheromoneAddition) {
+void Graph::addPheromone(std::vector<std::vector<float>> pheromoneAddition) { //TODO - could just add pheromone from ant::updatePheromone
     for (int i = 0; i < numberOfLocations; i++) {
         for (int j = 0; j <numberOfLocations; j++) {
-            double newPheromoneValue = pheromone.at(i).at(j) + pheromoneAddition.at(i).at(j);
+            std::cout << "\n pheromone: " << pheromone.at(i).at(j);
+            std::cout << "\n addition : " << pheromoneAddition.at(i).at(j);
+            float newPheromoneValue = pheromone.at(i).at(j) + pheromoneAddition.at(i).at(j);
             pheromone.at(i).at(j) = newPheromoneValue;
         }
     }
+}
+
+void Graph::evaporatePheromone(float evapRate) {
+    for (int i = 0; i < numberOfLocations; i++) {
+        for (int j = 0; j < numberOfLocations; j++) {
+            pheromone[i][j] = pheromone[i][j] * (1-evapRate);
+        }
+    }
+}
+
+void Graph::addPartialPheromone(std::vector<std::vector<float>> pheromoneAddition) {
+    for (int i = 0; i < numberOfLocations; i++) {
+        for (int j = 0; j < numberOfLocations; j++) {
+            float newPheromoneValue = partialPheromone.at(i).at(j) + pheromoneAddition.at(i).at(j);
+            partialPheromone.at(i).at(j) += newPheromoneValue;
+        }
+    }
+}
+
+std::vector<std::vector<float>> Graph::getPartialPheromone() {
+    return partialPheromone;
 }

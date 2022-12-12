@@ -476,6 +476,14 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/joseph/Documents/QACO/lib/CTPL/ctpl.h">
+			<Option target="Quadratic_Ant_Colony_Optimisation_Solver_run"/>
+			<Option target="Quadratic_Ant_Colony_Optimisation_Solver_lib"/>
+		</Unit>
+		<Unit filename="/home/joseph/Documents/QACO/lib/CTPL/ctpl_stl.h">
+			<Option target="Quadratic_Ant_Colony_Optimisation_Solver_run"/>
+			<Option target="Quadratic_Ant_Colony_Optimisation_Solver_lib"/>
+		</Unit>
 		<Unit filename="/home/joseph/Documents/QACO/lib/googletest/googlemock/src/gmock-all.cc">
 			<Option target="gmock"/>
 		</Unit>

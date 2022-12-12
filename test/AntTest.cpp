@@ -34,5 +34,24 @@ TEST(randomWalk, traverseGraphTest) {
         }
     }
     ASSERT_FALSE(containsDuplicate);
-
 }
+
+TEST(pheromone, addPheromoneValues) {
+    Graph Graph1;
+    Ant Ant1(&Graph1);
+    Ant1.testTraverseGraph();
+    std::vector<std::vector<float>> newPheromone;
+    std::vector<float> newPheromoneRow = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+    for (int i = 0; i<50; i++){
+        newPheromone.emplace_back(newPheromoneRow);
+    }
+
+    Ant1.addPheromone(newPheromone);
+    for(int i=0; i<50; i++) {
+        for(int j=0; j<50; j++) {
+            if (i == j) { continue;}
+            ASSERT_TRUE(Graph1.getPheromone(i, j) == 2);
+        }
+    }
+}
+
