@@ -3,7 +3,6 @@
 //
 
 #include <map>
-#include <utility>
 #include <iostream>
 #include "Ant.h"
 
@@ -13,7 +12,7 @@ Ant::Ant(Graph *graph1 ){
 }
 
 void Ant::traverseGraph() {
-    //TODO - create more efficient sampler (discrete distribution without replacement) https://www.sciencedirect.com/science/article/abs/pii/S002001900500298X?via%3Dihub
+    //TODO - Create no local heuristic option by setting heuristic matrix as 1's (apart from diagonal)
 
     // Getting and configuring heuristic matrix
     std::vector<std::vector<float>> heuristicMatrix;
@@ -35,6 +34,7 @@ void Ant::traverseGraph() {
 
     // First traversal from imaginary start node
     int firstNode = firstDistribution(*randomGenerator);
+    tabuList.clear();
     tabuList.emplace_back(firstNode);
 
 
@@ -66,19 +66,15 @@ void Ant::traverseGraph() {
 
         // Zero out column [nextNode] so node is not selected again
         for (int i = 0; i < graph->getNumberOfLocations(); i++) {
-            heuristicMatrix[i][nextNode] = 0; //TODO - check
+            heuristicMatrix[i][nextNode] = 0;
         }
 
         // Resets distribution for next iteration
         nextDistribution.reset();
-        weights.clear();
-
 
         // Sets next node as last node for next loop iteration
         lastNode = nextNode;
     }
-    // Avoiding memory leak
-    //delete(randomGenerator); //TODO - check
 }
 
 int Ant::getCost() {
@@ -93,18 +89,7 @@ int Ant::getCost() {
     return totalCost;
 }
 
-int Ant::getCost(std::vector<int> localTabuList) {
-    int totalCost = 0;
-    for (int i = 0; i < graph->getNumberOfLocations(); i+=2) {
-        // Cost is distance * flow
-        totalCost += graph->getDistance(localTabuList.at(i), localTabuList.at(i + 1)) * graph->getFlow(localTabuList.at(i), localTabuList.at(i + 1));
-    }
-    // Returns inverse so to minimise cost we find the highest calculateInverseCost for any localTabuList
-    return totalCost;
-}
-
 std::vector<int> Ant::getTabuList() {
-    traverseGraph();
     return tabuList;
 }
 
