@@ -23,6 +23,8 @@ limitations under the License.
 
 This program is for solving qudratic asignment probelms using ant colony optimsation.
 
+Current compiled release (for linux) can be found in ./cmake-build-release/src
+
 Run the program with --help or -h for help with command line flags and arguments.
 
 It is recomended to run the program with argument "-heuristic true" to get best results.
