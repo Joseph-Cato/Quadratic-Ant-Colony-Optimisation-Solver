@@ -81,14 +81,26 @@ void Ant::traverseGraph() {
     //delete(randomGenerator); //TODO - check
 }
 
-float Ant::calculateInverseCost() {
+int Ant::getCost() {
     int totalCost = 0;
     for (int i = 0; i < graph->getNumberOfLocations()-1; i++) {
-        // Cost is distance * flow
-        totalCost += graph->getDistance(tabuList.at(i), tabuList.at(i+1)) * graph->getFlow(tabuList.at(i), tabuList.at(i+1));
+        // Cost addition is distance * flow
+        int node = tabuList[i];
+        int nextNode = tabuList[i+1];
+        totalCost = totalCost + graph->getDistance(node, nextNode) * graph->getFlow(node, nextNode);
     }
     // Returns inverse so to minimise cost we find the highest calculateInverseCost for any tabuList
-    return ((float) 1 / (float) totalCost);
+    return totalCost;
+}
+
+int Ant::getCost(std::vector<int> localTabuList) {
+    int totalCost = 0;
+    for (int i = 0; i < graph->getNumberOfLocations(); i+=2) {
+        // Cost is distance * flow
+        totalCost += graph->getDistance(localTabuList.at(i), localTabuList.at(i + 1)) * graph->getFlow(localTabuList.at(i), localTabuList.at(i + 1));
+    }
+    // Returns inverse so to minimise cost we find the highest calculateInverseCost for any localTabuList
+    return totalCost;
 }
 
 std::vector<int> Ant::getTabuList() {
@@ -98,10 +110,12 @@ std::vector<int> Ant::getTabuList() {
 
 
 void Ant::updatePartialPheromone(float inverseCost) {
-    graph->pheromoneMutex.lock();
+    Graph::pheromoneMutex.lock();
     graph->addPartialPheromone(inverseCost, tabuList);
-    graph->pheromoneMutex.unlock();
+    Graph::pheromoneMutex.unlock();
 }
+
+
 
 
 

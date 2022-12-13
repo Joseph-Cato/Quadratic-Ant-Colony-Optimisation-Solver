@@ -129,7 +129,7 @@ std::vector<int> Graph::lineToVector(const std::string& string) {
     {
         // read as many numbers as possible.
         for (int number; reader >> number;) {
-            vector.push_back(number);
+            vector.emplace_back(number);
         }
         // consume and discard token from stream.
         if (reader.fail())
@@ -165,7 +165,7 @@ const int & Graph::getNumberOfLocations() const {
     return numberOfLocations;
 }
 
-void Graph::addPheromone() { //TODO - could just add pheromone from ant::updatePheromone
+void Graph::addPheromone() {
     for (int i = 0; i < numberOfLocations; i++) {
         for (int j = 0; j < numberOfLocations; j++) {
             pheromone.at(i).at(j) += partialPheromone.at(i).at(j);
@@ -192,3 +192,50 @@ void Graph::addPartialPheromone(float inverseCost, std::vector<int> tabuList) {
 std::vector<std::vector<float>> Graph::getPartialPheromone() {
     return partialPheromone;
 }
+
+/*
+std::vector<int> Graph::getBestPath() {
+
+    std::vector<int> bestTabuList = std::vector<int>();
+    float bestPheromoneValue = 0;
+
+    // Finds best starting node from initial pheromone
+    int lastNode = -1;
+    for (int i = 0; i < numberOfLocations; i++){
+        if (initialPheromone[i] > bestPheromoneValue) {
+            lastNode = i;
+            bestPheromoneValue = initialPheromone[i];
+        }
+    }
+
+    if (lastNode < 0) {
+        throw std::exception();
+    }
+
+    bestTabuList.emplace_back(lastNode);
+
+    // finds next best node according to pheromone value for all other nodes
+    int firstNode = lastNode;
+
+    for (int i = 0; i < numberOfLocations; i++) {
+
+        if (i == firstNode) {
+            continue;
+        }
+
+        int nextNode = -1;
+        bestPheromoneValue = -1;
+
+        for (int j = 0; j<numberOfLocations; j++) {
+
+        }
+
+        double pheromoneComponent = pow( (double) pheromone[lastNode][i], (double) graph->getALPHA());
+        double heuristicComponent = pow( heuristicMatrix[lastNode][i], (double) graph->getBETA() );
+        double weight = pheromoneComponent * heuristicComponent;
+        weights.emplace_back( weight );
+    }
+
+    return
+}
+*/
