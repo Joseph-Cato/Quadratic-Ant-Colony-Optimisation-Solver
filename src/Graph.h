@@ -11,6 +11,7 @@ private:
     std::vector<std::vector<float>> pheromone;
     std::vector<std::vector<float>> partialPheromone;
     std::vector<float> initialPheromone;
+    std::vector<float> initialPartialPheromone;
     std::vector<std::vector<int>> distances;
     std::vector<std::vector<int>> flows;
     std::vector<std::vector<float>> heuristicMatrix;
@@ -28,7 +29,7 @@ private:
 
 public:
 
-    static std::mutex pheromoneMutex; //*   Mutex dedicated to alterations of pheromone matrix */
+    static std::mutex pheromoneMutex; //  Mutex dedicated to alterations of pheromone matrix
 
     /**
      * Default constructor calls overloaded constructor with default filePath, ALPHA_VALUE, and BETA_VALUE.
@@ -104,6 +105,13 @@ public:
      */
     void addPartialPheromone(float inverseCost, std::vector<int> tabuList);
 
+    /** Increments partial initial pheromone vector by inverseCost at the location fo the first node travelled to
+     *
+     * @param inverseCost increment value
+     * @param firstNode First node traveled to by ant
+     */
+    void addInitialPartialPheromone(float inverseCost, int firstNode);
+
     /** Multiplies each pheromone value by (1 - evaporation rate)
      *
      * @param evapRate evaporation rate
@@ -114,6 +122,11 @@ public:
      *
      */
     void addPheromone();
+
+    /** Adds initial partial pheromone to initial pheromone
+     *
+     */
+    void addInitialPheromone();
 
 };
 

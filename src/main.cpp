@@ -40,7 +40,10 @@ void antSolve([[maybe_unused]] int ithread) {
     solutionMutex.unlock();
 
     // Updates Partial Pheromone
+
     ant.updatePartialPheromone( (1 / cost) );
+    ant.updateInitialPartialPheromone( (1 / cost));
+
 }
 
 /** \brief Calls antSolve() for number of ants, then updates pheromone n times according to number of evaluations specified,
@@ -94,6 +97,7 @@ int solve(const std::string& filePath, int ants, float evapRate, int evaluations
 
         // Add partial pheromone to total pheromone
         graph.addPheromone();
+        graph.addInitialPheromone();
 
         // Evaporate pheromone
         graph.evaporatePheromone(evapRate);
