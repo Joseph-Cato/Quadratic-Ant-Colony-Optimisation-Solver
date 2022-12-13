@@ -131,11 +131,14 @@ int solve(const std::string& filePath, int ants, float evapRate, int evaluations
 }
 
 int main(int argc, char **argv) {
+
+    using namespace std::literals;
+
     // Default Arguments
     std::string filePath = "../../res/dataSet.txt";
     int ants = 100;
     float evapRate = 0.9;
-    int evaluations = 100000;
+    int evaluations = 10000;
     double alpha = 2.0;
     double beta = 1.0;
     int threads = 4;
@@ -144,18 +147,18 @@ int main(int argc, char **argv) {
     // ---- Reading in arguments from command line
 
     // If no arguments provided, uses defaults
-    if (argc == 0) {
+    if (argc <= 1) {
         return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads, heuristic);
     }
 
-    std::string arg0 = argv[0];
-    if (arg0 == "--help" || arg0 == "-h") {
+    std::string arg0 = (std::string) argv[1];
+    if (arg0 == "--help"sv || arg0 == "-h"sv) {
         // Prints help to console if -h or --help flag specified
-        std::cout << "\n\nHelp info:\n\n";
+        std::cout << "\nHelp info:\n\n";
         std::cout << "Program can be run with various optional [compiler flag] [value] pairs. If a flag and value pair is not specified default values will be used (shown below).\n";
         std::string helpStringBody = "Possible arguments flags and values are:\n"
                                      "  -h/--help                   : Shows this text.\n"
-                                     "  -filePath                   : Specifies file path to data set."
+                                     "  -filePath                   : Specifies file path to data set.\n"
                                      "  -ants [int]                 : Number of ants to run on each evaluation.\n"
                                      "  -heuristic [true/false]     : Whether local heuristic will be included in graph traversal calculation.\n"
                                      "  -evapRate [double]          : Rate at which pheromone evaporates.\n"
@@ -165,16 +168,16 @@ int main(int argc, char **argv) {
                                      "  -threads [int]              : Number of thread to be created to run ants.\n\n"
                                      ""
                                      "Example:\n"
-                                     "      ./QACO -filePath ../../dataSet.txt -ant 100 -evaluations 10000 -beat 0.5 -threads 2 -heuristic true\n";
+                                     "      ./Quadratic_Ant_Colony_Optimisation_Solver -filePath ../../res/dataSet.txt -ants 100 -evaluations 10000 -beta 0.5 -threads 2 -heuristic true\n";
 
         std::cout << helpStringBody;
         return 0;
     }
 
     // Checks for flags and sets value
-    for (int i = 0; i < argc-1; i = i+2) {
-        std::string argument = argv[i];
-        std::string value = argv[i+1];
+    for (int i = 1; i < argc-1; i += 2) {
+        std::string argument = (std::string) argv[i];
+        std::string value = (std::string) argv[i+1];
         if (argument == "-ants") {
             ants = std::stoi( value );
         } else if (argument == "-evapRate") {
@@ -192,20 +195,20 @@ int main(int argc, char **argv) {
         } else if (argument == "-heuristic") {
             if (value == "true") {
                 heuristic = true;
-            } else if (argument == "false") {
+            } else if (value == "false") {
                 heuristic = false;
             } else {
                 // Catches invalid arguments
                 std::cout << "\nError - Invalid arguments:\n";
                 std::cout << argv[i] << "\n";
-                std::cout << "Please use flag '--help' for further guidance.";
+                std::cout << "Please use flag '--help' or '-h' for further guidance.\n\n";
                 return 1;
             }
         } else {
             // Catches invalid arguments
-            std::cout << "\nError - Invalid arguments:\n";
+            std::cout << "\nError - Invalid argument:\n";
             std::cout << argv[i] << "\n";
-            std::cout << "Please use flag '--help' for further guidance.";
+            std::cout << "Please use flag '--help' or '-h' for further guidance.\n\n";
             return 1;
         }
     }
