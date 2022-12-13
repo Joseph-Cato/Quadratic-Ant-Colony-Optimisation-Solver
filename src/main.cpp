@@ -62,10 +62,10 @@ void antSolve([[maybe_unused]] int ithread) {
  * @param threads - Number of threads generated in thread pool to run antSolve() function calls.
  * @return - Exit status.
  */
-int solve(const std::string& filePath, int ants, float evapRate, int evaluations, double alpha, double beta, int threads) {
+int solve(const std::string& filePath, int ants, float evapRate, int evaluations, double alpha, double beta, int threads, bool heuristic) {
     //Generating graph
     std::cout << "Generating Graph...                       ";
-    Graph graph(filePath, alpha, beta);
+    Graph graph(filePath, alpha, beta, heuristic);
     graphInstance = graph;
     std::cout << "Done\n";
 
@@ -138,12 +138,13 @@ int main(int argc, char **argv) {
     double alpha = 2.0;
     double beta = 1.0;
     int threads = 1;
+    bool heuristic = false;
 
     // ---- Reading in arguments from command line
 
     // If no arguments provided, uses defaults
     if (argc == 0) {
-        return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads);
+        return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads, heuristic);
     }
 
     std::string arg0 = argv[0];
@@ -152,17 +153,18 @@ int main(int argc, char **argv) {
         std::cout << "\n\nHelp info:\n\n";
         std::cout << "Program can be run with various optional [compiler flag] [value] pairs. If a flag and value pair is not specified default values will be used (shown below).\n";
         std::string helpStringBody = "Possible arguments flags and values are:\n"
-                                     "  -h/--help           : Shows this text.\n"
-                                     "  -filePath           : "
-                                     "  -ants [int]         : Number of ants to run on each evaluation.\n"
-                                     "  -evapRate [double]  : Rate at which pheromone evaporates.\n"
-                                     "  -evaluations [int]  : Number of total evaluations\n"
-                                     "  -alpha [double]     : Exponent of pheromone in determining node traversal probability\n"
-                                     "  -beta [double]      : Exponent of distance in determining node traversal probability\n"
-                                     "  -threads [int]      : Number of thread to be created to run ants.\n\n"
+                                     "  -h/--help                   : Shows this text.\n"
+                                     "  -filePath                   : Specifies file path to data set."
+                                     "  -ants [int]                 : Number of ants to run on each evaluation.\n"
+                                     "  -heuristic [true/false]     : Whether local heuristic will be included in graph traversal calculation.\n"
+                                     "  -evapRate [double]          : Rate at which pheromone evaporates.\n"
+                                     "  -evaluations [int]          : Number of total evaluations\n"
+                                     "  -alpha [double]             : Exponent of pheromone in determining node traversal probability\n"
+                                     "  -beta [double]              : Exponent of distance in determining node traversal probability\n"
+                                     "  -threads [int]              : Number of thread to be created to run ants.\n\n"
                                      ""
                                      "Example:\n"
-                                     "      ./QACO -filePath ../../dataSet.txt -ant 100 -evaluations 10000 -beat 0.5 -threads 2\n";
+                                     "      ./QACO -filePath ../../dataSet.txt -ant 100 -evaluations 10000 -beat 0.5 -threads 2 -heuristic true\n";
 
         std::cout << helpStringBody;
         return 0;
@@ -186,6 +188,18 @@ int main(int argc, char **argv) {
             threads = std::stoi(value);
         } else if (argument == "-filePath") {
             filePath = value;
+        } else if (argument == "-heuristic") {
+            if (value == "true") {
+                heuristic = true;
+            } else if (argument == "false") {
+                heuristic = false;
+            } else {
+                // Catches invalid arguments
+                std::cout << "\nError - Invalid arguments:\n";
+                std::cout << argv[i] << "\n";
+                std::cout << "Please use flag '--help' for further guidance.";
+                return 1;
+            }
         } else {
             // Catches invalid arguments
             std::cout << "\nError - Invalid arguments:\n";
@@ -196,5 +210,5 @@ int main(int argc, char **argv) {
     }
 
     // Runs solving function
-    return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads);
+    return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads, heuristic);
 }
