@@ -9,7 +9,7 @@
 
 
 Graph graphInstance;
-double bestSolutionInverseCost = 0;
+double bestSolutionCost = -1;
 std::vector<int> bestSolutionTabuList;
 std::mutex solutionMutex;
 
@@ -23,22 +23,20 @@ void antSolve(int ithread) {
     // traverses graph
     ant.traverseGraph();
 
-    // Retrives values from graph traversal
-    float inverseCost = ant.calculateInverseCost();
-    std::vector<int> tabuList = ant.getTabuList();
+    // Retrieves values from graph traversal
+    auto cost = (float) ant.getCost();
+    //std::vector<int> tabuList = ant.getTabuList(); //TODO - remove?
 
-
-    // checks if solution is best
-    // TODO - put outside thread?
+    // Checks if no solution has been set or if new solution is best
     solutionMutex.lock();
-    if (bestSolutionInverseCost < inverseCost) {
-        bestSolutionTabuList = tabuList;
-        bestSolutionInverseCost = inverseCost;
+    if (bestSolutionCost == -1 || cost < bestSolutionCost ) {
+        bestSolutionCost = cost;
+        bestSolutionTabuList = ant.getTabuList();
     }
     solutionMutex.unlock();
 
     //Updates Partial Pheromone
-    ant.updatePartialPheromone(inverseCost);
+    ant.updatePartialPheromone( (1 / cost) );
 }
 
 int solve(const std::string& filePath, int ants, float evapRate, int evaluations, double alpha, double beta, int threads) {
@@ -67,24 +65,38 @@ int solve(const std::string& filePath, int ants, float evapRate, int evaluations
         // Wait for threads to complete work
         p.stop(true);
 
-        // Evaporate pheromone
-        graph.evaporatePheromone(evapRate);
+        // The next two function calls have not been integrated into the ant traversal (which may be more efficient) to make it easy to change the update rule from:
+        // t_i_j(t+1) <- (1-p)*t_i_j(t) + delta(t_i_j(t)) [from lecture notes]
+        // to:
+        // t_i_j(t+1) <- (1-p)*(t_i_j(t) + delta(t_i_j(t))) [from CA specification] - default
+        // to change to the first equation, change the order of the next two function calls
 
         // Add partial pheromone to total pheromone
-        graph.addPheromone(); //TODO - this line breaks everything
+        graph.addPheromone();
+
+        // Evaporate pheromone
+        graph.evaporatePheromone(evapRate);
 
     }
 
     auto stop = std::chrono::steady_clock::now();
     std::chrono::duration<double> diff = stop - start;
 
+    //std::vector<int> bestPath = graphInstance.getBestPath(); //TODO - remove
+
+    // If bestSolutionCost is near initial limit value
+    if ( bestSolutionCost == -1 ) {
+        std::cout << "\n Error, no best path found.";
+        return 1;
+    }
+
     std::cout << "Done\n";
-    std::cout << "\nIn "<< evaluations << " evaluations found optimal path of cost " << (bestSolutionInverseCost/1) << " in ";
+    std::cout << "\nIn "<< evaluations << " evaluations found optimal path of cost " << (bestSolutionCost) << " in ";
     std::cout <<  diff.count() << "s\n";
     std::cout << "Best solution ([value] facility at [index] location):\n";
     std::cout << "[ ";
-    for (unsigned long i = 0; i < bestSolutionTabuList.size()-1; i++) {
-        std::cout << bestSolutionTabuList[i] << ", ";
+    for (int i : bestSolutionTabuList) {
+        std::cout << i << ", ";
     }
     std::cout << bestSolutionTabuList[bestSolutionTabuList.size()] <<" ]\n";
 
@@ -107,7 +119,7 @@ int main(int argc, char **argv) {
     }
     std::string arg0 = argv[0];
     if (arg0 == "--help") {
-        std::cout << "\n\n Help info \n\n"; //TODO
+        std::cout << "\n\n Help info \n\n"; //TODO implement help function
         return 0;
     }
     for (int i = 0; i < argc-1; i = i+2) {

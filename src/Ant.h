@@ -30,8 +30,9 @@ public:
 
     void updatePartialPheromone(float inverseCost);
 
-    float calculateInverseCost();
+    int getCost();
 
+    int getCost(std::vector<int> localTabuList);
 
 
 };

@@ -57,6 +57,7 @@ public:
 
     void addPheromone();
 
+    std::vector<int> getBestPath();
 };
 
 
