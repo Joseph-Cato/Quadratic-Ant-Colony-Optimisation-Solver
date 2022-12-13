@@ -37,7 +37,6 @@ void Ant::traverseGraph() {
     tabuList.clear();
     tabuList.emplace_back(firstNode);
 
-
     // Zero out first node column of heuristic matrix so probability of returning to that node = 0
     for (int i = 0; i < graph->getNumberOfLocations(); i++) {
         heuristicMatrix[i][firstNode] = 0;
@@ -98,6 +97,12 @@ std::vector<int> Ant::getTabuList() {
 void Ant::updatePartialPheromone(float inverseCost) {
     Graph::pheromoneMutex.lock();
     graph->addPartialPheromone(inverseCost, tabuList);
+    Graph::pheromoneMutex.unlock();
+}
+
+void Ant::updateInitialPartialPheromone(float inverseCost) {
+    Graph::pheromoneMutex.lock();
+    graph->addInitialPartialPheromone(inverseCost, tabuList[0]);
     Graph::pheromoneMutex.unlock();
 }
 

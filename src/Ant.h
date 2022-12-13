@@ -56,6 +56,11 @@ public:
      */
     int getCost();
 
+    /** Increments the initial partial pheromone vector at starting node by inverse cost.
+     *
+     * @param inverseCost increment value
+     */
+    void updateInitialPartialPheromone(float inverseCost);
 };
 
 

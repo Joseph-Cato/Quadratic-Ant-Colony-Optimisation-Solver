@@ -112,6 +112,9 @@ Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE)
     for (int i = 0; i < numberOfLocations; i++) {
         initialPheromone.emplace_back(1);
     }
+    for (int i = 0; i < numberOfLocations; i++) {
+        initialPartialPheromone.emplace_back(0);
+    }
 
     // Generating Heuristic Matrix
     std::vector<float> heuristicRow;
@@ -184,6 +187,11 @@ void Graph::addPartialPheromone(float inverseCost, std::vector<int> tabuList) {
 
 }
 
+void Graph::addInitialPartialPheromone(float inverseCost, int firstNode) {
+
+    initialPartialPheromone[firstNode] += inverseCost;
+}
+
 void Graph::evaporatePheromone(float evapRate) {
     for (int i = 0; i < numberOfLocations; i++) {
         for (int j = 0; j < numberOfLocations; j++) {
@@ -197,5 +205,11 @@ void Graph::addPheromone() {
         for (int j = 0; j < numberOfLocations; j++) {
             pheromone.at(i).at(j) += partialPheromone.at(i).at(j);
         }
+    }
+}
+
+void Graph::addInitialPheromone() {
+    for (int i = 0; i < numberOfLocations; i++) {
+        initialPheromone[i] += initialPartialPheromone[i];
     }
 }
