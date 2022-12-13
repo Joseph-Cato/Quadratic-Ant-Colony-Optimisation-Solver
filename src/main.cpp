@@ -146,13 +146,25 @@ int main(int argc, char **argv) {
         return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads);
     }
 
-    // Prints help to console if -h or --help flag specified
     std::string arg0 = argv[0];
     if (arg0 == "--help" || arg0 == "-h") {
-        std::cout << "\n\nHelp info:\n";
+        // Prints help to console if -h or --help flag specified
+        std::cout << "\n\nHelp info:\n\n";
         std::cout << "Program can be run with various optional [compiler flag] [value] pairs. If a flag and value pair is not specified default values will be used (shown below).\n";
+        std::string helpStringBody = "Possible arguments flags and values are:\n"
+                                     "  -h/--help           : Shows this text.\n"
+                                     "  -filePath           : "
+                                     "  -ants [int]         : Number of ants to run on each evaluation.\n"
+                                     "  -evapRate [double]  : Rate at which pheromone evaporates.\n"
+                                     "  -evaluations [int]  : Number of total evaluations\n"
+                                     "  -alpha [double]     : Exponent of pheromone in determining node traversal probability\n"
+                                     "  -beta [double]      : Exponent of distance in determining node traversal probability\n"
+                                     "  -threads [int]      : Number of thread to be created to run ants.\n\n"
+                                     ""
+                                     "Example:\n"
+                                     "      ./QACO -filePath ../../dataSet.txt -ant 100 -evaluations 10000 -beat 0.5 -threads 2\n";
 
-        //TODO implement help function
+        std::cout << helpStringBody;
         return 0;
     }
 
@@ -171,7 +183,9 @@ int main(int argc, char **argv) {
         } else if (argument == "-beta") {
             beta = std::stod( value );
         } else if (argument == "-threads") {
-            threads = std::stoi( value );
+            threads = std::stoi(value);
+        } else if (argument == "-filePath") {
+            filePath = value;
         } else {
             // Catches invalid arguments
             std::cout << "\nError - Invalid arguments:\n";
