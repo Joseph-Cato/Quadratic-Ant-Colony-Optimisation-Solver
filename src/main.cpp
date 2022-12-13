@@ -135,11 +135,11 @@ int main(int argc, char **argv) {
     std::string filePath = "../../res/dataSet.txt";
     int ants = 100;
     float evapRate = 0.9;
-    int evaluations = 10000;
+    int evaluations = 100000;
     double alpha = 2.0;
     double beta = 1.0;
-    int threads = 1;
-    bool heuristic = false;
+    int threads = 4;
+    bool heuristic = true;
 
     // ---- Reading in arguments from command line
 
