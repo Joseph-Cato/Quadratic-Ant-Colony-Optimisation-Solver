@@ -39,10 +39,11 @@ public:
     /**
      *
      * @param filePath
-     * @param ALPHA_VALUE - Exponent of pheromone in determining node traversal probability.
-     * @param BETA_VALUE - Exponent of heuristic in determining node traversal probability.
+     * @param ALPHA_VALUE Exponent of pheromone in determining node traversal probability.
+     * @param BETA_VALUE Exponent of heuristic in determining node traversal probability.
+     * @param heuristic If local heuristic will be included in calculations.
      */
-    Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE);
+    Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE, bool heuristic);
 
     /**
      *

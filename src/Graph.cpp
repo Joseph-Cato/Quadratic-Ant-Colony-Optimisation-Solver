@@ -37,10 +37,10 @@ const std::vector<std::vector<float>> & Graph::getHeuristicMatrix() {
     return Graph::heuristicMatrix;
 }
 
-Graph::Graph() : Graph("/home/joseph/Documents/QACO/res/dataSet.txt", 2, 1){
+Graph::Graph() : Graph("/home/joseph/Documents/QACO/res/dataSet.txt", 2, 1, false){
 }
 
-Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE) {
+Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE, bool heuristic) {
 
     pheromone.clear();
 
@@ -131,9 +131,15 @@ Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE)
                     heuristicRow.emplace_back(0);
                 } else {
                     // heuristic is calculated as 1 / distance - including flow gave worse results
-                    heuristicRow.emplace_back( 1.0 / distance);
+                    if (heuristic) {
+                        heuristicRow.emplace_back(1.0 / distance);
+                    } else {
+                        // Since 1^n for any n equals 1. This means the heuristic component will have no effect.
+                        heuristicRow.emplace_back(1.0);
+                    }
                 }
             }
+
         }
         heuristicMatrix.emplace_back(heuristicRow);
         heuristicRow.clear();
