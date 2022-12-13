@@ -128,7 +128,7 @@ Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE)
                     heuristicRow.emplace_back(0);
                 } else {
                     // heuristic is calculated as 1 / distance - including flow gave worse results
-                    heuristicRow.emplace_back( 1.0f / distance);
+                    heuristicRow.emplace_back( 1.0 / distance);
                 }
             }
         }

@@ -117,10 +117,10 @@ int solve(const std::string& filePath, int ants, float evapRate, int evaluations
     std::cout << "Best solution list: (location:facility)\n";
     std::cout << "[ ";
     int numOfValues = graphInstance.getNumberOfLocations();
-    for (int i = 0; i < numOfValues; i++) {
+    for (int i = 0; i < numOfValues-1; i++) {
         std::cout << "(" << i << ":" << bestSolutionTabuList[i] << "), ";
     }
-    std::cout << "(" << (int) numOfValues << ":" << bestSolutionTabuList[numOfValues] << ") ]\n";
+    std::cout << "(" << (int) numOfValues << ":" << bestSolutionTabuList[numOfValues-1] << ") ]\n";
 
     return 0;
 }
@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
     int evaluations = 10000;
     double alpha = 2.0;
     double beta = 1.0;
-    int threads = 4;
+    int threads = 1;
 
     // ---- Reading in arguments from command line
 

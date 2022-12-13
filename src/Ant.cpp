@@ -60,8 +60,9 @@ void Ant::traverseGraph() {
 
         // Use probabilities as weights for new distribution and pick next node
         std::discrete_distribution<> nextDistribution ( weights.begin() , weights.end());
-
         int nextNode = nextDistribution( *randomGenerator );
+
+        // Adds node to tabuList
         tabuList.emplace_back(nextNode);
 
         // Zero out column [nextNode] so node is not selected again
