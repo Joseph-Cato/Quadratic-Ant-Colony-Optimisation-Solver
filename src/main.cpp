@@ -53,13 +53,14 @@ void antSolve([[maybe_unused]] int ithread) {
  * Then updates pheromone, and finally evaporates pheromone.
  * Does this n times according to number of evaluations, then prints results.
  *
- * @param filePath - String filepath
- * @param ants - Number of ants
- * @param evapRate - Evaporation rate (multiplicative)
- * @param evaluations - Number of evaluations
- * @param alpha - Exponent of pheromone in determining node traversal probability.
- * @param beta - Exponent of heuristic in determining node traversal probability.
- * @param threads - Number of threads generated in thread pool to run antSolve() function calls.
+ * @param filePath String filepath
+ * @param ants Number of ants
+ * @param evapRate Evaporation rate (multiplicative)
+ * @param evaluations Number of evaluations
+ * @param alpha Exponent of pheromone in determining node traversal probability.
+ * @param beta Exponent of heuristic in determining node traversal probability.
+ * @param threads Number of threads generated in thread pool to run antSolve() function calls.
+ * @param heuristic Whether to include local heuristic in calculation.
  * @return - Exit status.
  */
 int solve(const std::string& filePath, int ants, float evapRate, int evaluations, double alpha, double beta, int threads, bool heuristic) {
