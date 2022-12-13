@@ -10,118 +10,6 @@
 
 std::mutex Graph::pheromoneMutex;
 
-const std::vector<std::vector<float>> & Graph::getHeuristicMatrix() {
-    return Graph::heuristicMatrix;
-}
-
-Graph::Graph() : Graph("/home/joseph/Documents/QACO/res/dataSet.txt", 2, 1){
-}
-
-Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE) {
-
-    pheromone.clear();
-
-    ALPHA = ALPHA_VALUE;
-    BETA = BETA_VALUE;
-
-    std::vector<int> temp;
-    int lineCounter = 0;
-
-    std::fstream file;
-    file.open(filePath, std::ios::in);
-
-    if (file.is_open()) {
-
-        std::string line;
-        while (std::getline(file, line)) {
-            if (lineCounter == 0) {
-                temp = lineToVector(line);
-                numberOfLocations = temp.front();
-                lineCounter++;
-
-            } else if (lineCounter > 1 && lineCounter < numberOfLocations + 2) {
-                temp = lineToVector(line);
-                distances.emplace_back(temp);
-                lineCounter++;
-
-            } else if (lineCounter > numberOfLocations + 2) {
-                temp = lineToVector(line);
-                flows.emplace_back(temp);
-                lineCounter++;
-
-            } else {
-                lineCounter++;
-            }
-        }
-    } else {
-        throw std::runtime_error("FATAL: File could not be opened.");
-    }
-
-    file.close();
-
-    pheromone.clear();
-
-    //TODO combine for loop below into one?
-
-    // Generating initial pheromone levels
-    std::vector<float> pheromoneRow;
-
-    for (int i = 0; i < numberOfLocations; i++) {
-        for (int j = 0; j < numberOfLocations; j++) {
-            if (i != j) {
-                pheromoneRow.emplace_back(1);
-            } else {
-                pheromoneRow.emplace_back(0);
-            }
-        }
-        pheromone.emplace_back(pheromoneRow);
-        pheromoneRow.clear();
-    }
-
-    for (int i = 0; i < numberOfLocations; i++) {
-        initialPheromone.emplace_back(1);
-    }
-
-    // Generating Heuristic Matrix
-    std::vector<float> heuristicRow;
-
-    for (int i = 0; i < numberOfLocations; i++) {
-        for (int j = 0; j < numberOfLocations; j++) {
-            if (i == j) {
-                heuristicRow.emplace_back(0);
-            } else {
-                double distance = distances.at(i).at(j);
-                if (distance == 0) {
-                    heuristicRow.emplace_back(0);
-                } else {
-                    heuristicRow.emplace_back((float) (1.0 / distances.at(i).at(j)));
-                }
-            }
-        }
-        heuristicMatrix.emplace_back(heuristicRow);
-        heuristicRow.clear();
-    }
-
-    // Generating partial pheromone
-    std::vector<float> partialPheromoneRow;
-
-    for (int i = 0; i < numberOfLocations; i++) {
-        for (int j = 0; j < numberOfLocations; j++) {
-            partialPheromoneRow.emplace_back(0);
-        }
-        partialPheromone.emplace_back(partialPheromoneRow);
-        partialPheromoneRow.clear();
-    }
-}
-
-double Graph::getBETA() const {
-    return BETA;
-}
-
-double Graph::getALPHA() const {
-    return ALPHA;
-}
-
 std::vector<int> Graph::lineToVector(const std::string& string) {
     std::vector<int> vector;
     std::istringstream reader(string);
@@ -145,6 +33,129 @@ std::vector<int> Graph::lineToVector(const std::string& string) {
 
 }
 
+const std::vector<std::vector<float>> & Graph::getHeuristicMatrix() {
+    return Graph::heuristicMatrix;
+}
+
+Graph::Graph() : Graph("/home/joseph/Documents/QACO/res/dataSet.txt", 2, 1){
+}
+
+Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE) {
+
+    pheromone.clear();
+
+    // Set ALPHA and BETA instance variables
+    ALPHA = ALPHA_VALUE;
+    BETA = BETA_VALUE;
+
+    std::vector<int> dataRow; /** Variable used to construct rows of matrices */
+    int lineCounter = 0;
+
+    // Opens file
+    std::fstream file;
+    file.open(filePath, std::ios::in);
+    if (file.is_open()) {
+        // Parses lines based on how many lines there will be according to the first value specified
+        std::string line;
+        while (std::getline(file, line)) {
+            if (lineCounter == 0) {
+                // Gets number of locations/facilities (only one varible is used
+                dataRow = lineToVector(line);
+                numberOfLocations = dataRow.front();
+                lineCounter++;
+
+            } else if (lineCounter > 1 && lineCounter < numberOfLocations + 2) {
+                // Gets distance matrix
+                dataRow = lineToVector(line);
+                distances.emplace_back(dataRow);
+                lineCounter++;
+
+            } else if (lineCounter > numberOfLocations + 2) {
+                // Gets flow matrix
+                dataRow = lineToVector(line);
+                flows.emplace_back(dataRow);
+                lineCounter++;
+
+            } else {
+                // Skips empty lines
+                lineCounter++;
+            }
+        }
+    } else {
+        throw std::runtime_error("FATAL: File could not be opened.");
+    }
+
+    file.close();
+
+    pheromone.clear();
+
+    // The three loops below could be combined into one if you need more speed generating graph object -
+    // current implementation is more readable
+
+    // Generating initial pheromone levels
+    std::vector<float> pheromoneRow;
+
+    for (int i = 0; i < numberOfLocations; i++) {
+        for (int j = 0; j < numberOfLocations; j++) {
+            if (i != j) {
+                // Initial pheromone value is 0.5
+                pheromoneRow.emplace_back(0.5);
+            } else {
+                // Node cannot be visited from same node so major diagonal is made up of zeros
+                pheromoneRow.emplace_back(0);
+            }
+        }
+        pheromone.emplace_back(pheromoneRow);
+        pheromoneRow.clear();
+    }
+
+    for (int i = 0; i < numberOfLocations; i++) {
+        initialPheromone.emplace_back(1);
+    }
+
+    // Generating Heuristic Matrix
+    std::vector<float> heuristicRow;
+
+    for (int i = 0; i < numberOfLocations; i++) {
+        for (int j = 0; j < numberOfLocations; j++) {
+            if (i == j) {
+                // Node cannot be visited from same node so major diagonal is made up of zeros
+                heuristicRow.emplace_back(0);
+            } else {
+                auto distance = (float) distances.at(i).at(j);
+                if (distance == 0) {
+                    // Node cannot be visited from same node so major diagonal is made up of zeros
+                    heuristicRow.emplace_back(0);
+                } else {
+                    // heuristic is calculated as 1 / distance - including flow gave worse results
+                    heuristicRow.emplace_back( 1.0 / distance);
+                }
+            }
+        }
+        heuristicMatrix.emplace_back(heuristicRow);
+        heuristicRow.clear();
+    }
+
+    // Generating partial pheromone - numberOfLocations*numberOfLocations zeros matrix
+    std::vector<float> partialPheromoneRow;
+
+    for (int i = 0; i < numberOfLocations; i++) {
+        for (int j = 0; j < numberOfLocations; j++) {
+            partialPheromoneRow.emplace_back(0);
+        }
+        partialPheromone.emplace_back(partialPheromoneRow);
+        partialPheromoneRow.clear();
+    }
+}
+
+double Graph::getBETA() const {
+    return BETA;
+}
+
+double Graph::getALPHA() const {
+    return ALPHA;
+}
+
 const std::vector<float> & Graph::getInitialPheromone() {
     return initialPheromone;
 }
@@ -165,12 +176,12 @@ const int & Graph::getNumberOfLocations() const {
     return numberOfLocations;
 }
 
-void Graph::addPheromone() {
-    for (int i = 0; i < numberOfLocations; i++) {
-        for (int j = 0; j < numberOfLocations; j++) {
-            pheromone.at(i).at(j) += partialPheromone.at(i).at(j);
-        }
+void Graph::addPartialPheromone(float inverseCost, std::vector<int> tabuList) {
+
+    for (int i = 0; i < (int) tabuList.size(); i += 2) {
+        partialPheromone[ tabuList[i] ][ tabuList[i+1] ] += inverseCost;
     }
+
 }
 
 void Graph::evaporatePheromone(float evapRate) {
@@ -181,61 +192,10 @@ void Graph::evaporatePheromone(float evapRate) {
     }
 }
 
-void Graph::addPartialPheromone(float inverseCost, std::vector<int> tabuList) {
-
-    for (int i = 0; i < (int) tabuList.size(); i += 2) {
-        partialPheromone[ tabuList[i] ][ tabuList[i+1] ] += inverseCost;
-    }
-
-}
-
-std::vector<std::vector<float>> Graph::getPartialPheromone() {
-    return partialPheromone;
-}
-
-/*
-std::vector<int> Graph::getBestPath() {
-
-    std::vector<int> bestTabuList = std::vector<int>();
-    float bestPheromoneValue = 0;
-
-    // Finds best starting node from initial pheromone
-    int lastNode = -1;
-    for (int i = 0; i < numberOfLocations; i++){
-        if (initialPheromone[i] > bestPheromoneValue) {
-            lastNode = i;
-            bestPheromoneValue = initialPheromone[i];
-        }
-    }
-
-    if (lastNode < 0) {
-        throw std::exception();
-    }
-
-    bestTabuList.emplace_back(lastNode);
-
-    // finds next best node according to pheromone value for all other nodes
-    int firstNode = lastNode;
-
+void Graph::addPheromone() {
     for (int i = 0; i < numberOfLocations; i++) {
-
-        if (i == firstNode) {
-            continue;
+        for (int j = 0; j < numberOfLocations; j++) {
+            pheromone.at(i).at(j) += partialPheromone.at(i).at(j);
         }
-
-        int nextNode = -1;
-        bestPheromoneValue = -1;
-
-        for (int j = 0; j<numberOfLocations; j++) {
-
-        }
-
-        double pheromoneComponent = pow( (double) pheromone[lastNode][i], (double) graph->getALPHA());
-        double heuristicComponent = pow( heuristicMatrix[lastNode][i], (double) graph->getBETA() );
-        double weight = pheromoneComponent * heuristicComponent;
-        weights.emplace_back( weight );
     }
-
-    return
 }
-*/
