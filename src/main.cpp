@@ -130,6 +130,14 @@ int solve(const std::string& filePath, int ants, float evapRate, int evaluations
     return 0;
 }
 
+int argumentError(const std::string& argument, const std::string& extra) {
+    std::cout << "\nError - Invalid argument:\n";
+    std::cout << argument << "\n";
+    std::cout << extra;
+    std::cout << "Please use flag '--help' or '-h' for further guidance.\n\n";
+    return 1;
+}
+
 int main(int argc, char **argv) {
 
     using namespace std::literals;
@@ -148,6 +156,7 @@ int main(int argc, char **argv) {
 
     // If no arguments provided, uses defaults
     if (argc <= 1) {
+        std::cout << "\n Running with default parameters, run with argument '-h' or '--help' for more information.\n\n";
         return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads, heuristic);
     }
 
@@ -162,10 +171,10 @@ int main(int argc, char **argv) {
                                      "  -ants [int]                 : Number of ants to run on each evaluation.\n"
                                      "  -heuristic [true/false]     : Whether local heuristic will be included in graph traversal calculation.\n"
                                      "  -evapRate [double]          : Rate at which pheromone evaporates.\n"
-                                     "  -evaluations [int]          : Number of total evaluations\n"
-                                     "  -alpha [double]             : Exponent of pheromone in determining node traversal probability\n"
-                                     "  -beta [double]              : Exponent of distance in determining node traversal probability\n"
-                                     "  -threads [int]              : Number of thread to be created to run ants.\n\n"
+                                     "  -evaluations [int]          : Number of total evaluations.\n"
+                                     "  -alpha [double]             : Exponent of pheromone in determining node traversal probability.\n"
+                                     "  -beta [double]              : Exponent of distance in determining node traversal probability.\n"
+                                     "  -threads [int]              : Number of threads to be created to run ants.\n\n"
                                      ""
                                      "Example:\n"
                                      "      ./Quadratic_Ant_Colony_Optimisation_Solver -filePath ../../res/dataSet.txt -ants 100 -evaluations 10000 -beta 0.5 -threads 2 -heuristic true\n";
@@ -189,6 +198,10 @@ int main(int argc, char **argv) {
         } else if (argument == "-beta") {
             beta = std::stod( value );
         } else if (argument == "-threads") {
+            if (std::stoi(value) < 1) {
+                std::string info = "Program must have at least one thread enabled.\n";
+                return argumentError(argv[i], info);
+            }
             threads = std::stoi(value);
         } else if (argument == "-filePath") {
             filePath = value;
@@ -199,17 +212,11 @@ int main(int argc, char **argv) {
                 heuristic = false;
             } else {
                 // Catches invalid arguments
-                std::cout << "\nError - Invalid arguments:\n";
-                std::cout << argv[i] << "\n";
-                std::cout << "Please use flag '--help' or '-h' for further guidance.\n\n";
-                return 1;
+                return argumentError(argv[i], argv[i+1]);
             }
         } else {
             // Catches invalid arguments
-            std::cout << "\nError - Invalid argument:\n";
-            std::cout << argv[i] << "\n";
-            std::cout << "Please use flag '--help' or '-h' for further guidance.\n\n";
-            return 1;
+            return argumentError(argv[i], argv[i+1]);
         }
     }
 
