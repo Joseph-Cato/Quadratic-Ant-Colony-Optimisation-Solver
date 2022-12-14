@@ -5,7 +5,7 @@ add_executable(Quadratic_Ant_Colony_Optimisation_Solver
 
 set(SOURCES ${SOURCES})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -lm -O2 -static-libstdc++ -static-libgcc")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -lm -O2 -static-libstdc++ -static-libgcc -pthread")
 
 add_executable(${BINARY}_run main.cpp Ant.h Ant.cpp Graph.h Graph.cpp ../lib/CTPL/ctpl_stl.h ../lib/CTPL/ctpl.h)
 

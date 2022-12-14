@@ -1,8 +1,9 @@
 {
+	"archive" : {},
 	"artifacts" : 
 	[
 		{
-			"path" : "src/Quadratic_Ant_Colony_Optimisation_Solver_run"
+			"path" : "src/libQuadratic_Ant_Colony_Optimisation_Solver_lib.a"
 		}
 	],
 	"backtrace" : 1,
@@ -10,7 +11,7 @@
 	{
 		"commands" : 
 		[
-			"add_executable",
+			"add_library",
 			"include_directories"
 		],
 		"files" : 
@@ -26,7 +27,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 10,
+				"line" : 12,
 				"parent" : 0
 			},
 			{
@@ -52,7 +53,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : " -Wall -Wextra -lm -O2 -lstdc++ -Wall -Wextra -lm -O2 -static-libstdc++ -static-libgcc -O3 -DNDEBUG -fdiagnostics-color=always"
+					"fragment" : " -Wall -Wextra -lm -O2 -lstdc++ -Wall -Wextra -lm -O2 -static-libstdc++ -static-libgcc -pthread -O3 -DNDEBUG -fdiagnostics-color=always"
 				},
 				{
 					"fragment" : "-std=gnu++23"
@@ -86,24 +87,9 @@
 			]
 		}
 	],
-	"id" : "Quadratic_Ant_Colony_Optimisation_Solver_run::@145eef247bfb46b6828c",
-	"link" : 
-	{
-		"commandFragments" : 
-		[
-			{
-				"fragment" : "-Wall -Wextra -lm -O2 -lstdc++ -Wall -Wextra -lm -O2 -static-libstdc++ -static-libgcc -O3 -DNDEBUG",
-				"role" : "flags"
-			},
-			{
-				"fragment" : "",
-				"role" : "flags"
-			}
-		],
-		"language" : "CXX"
-	},
-	"name" : "Quadratic_Ant_Colony_Optimisation_Solver_run",
-	"nameOnDisk" : "Quadratic_Ant_Colony_Optimisation_Solver_run",
+	"id" : "Quadratic_Ant_Colony_Optimisation_Solver_lib::@145eef247bfb46b6828c",
+	"name" : "Quadratic_Ant_Colony_Optimisation_Solver_lib",
+	"nameOnDisk" : "libQuadratic_Ant_Colony_Optimisation_Solver_lib.a",
 	"paths" : 
 	{
 		"build" : "src",
@@ -172,5 +158,5 @@
 			"sourceGroupIndex" : 1
 		}
 	],
-	"type" : "EXECUTABLE"
+	"type" : "STATIC_LIBRARY"
 }
