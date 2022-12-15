@@ -3,6 +3,7 @@
 #include "../lib/CTPL/ctpl.h"
 
 #include <iostream>
+#include <fstream>
 
 
 Graph graphInstance;
@@ -61,9 +62,10 @@ void antSolve([[maybe_unused]] int ithread) {
  * @param beta Exponent of heuristic in determining node traversal probability.
  * @param threads Number of threads generated in thread pool to run antSolve() function calls.
  * @param heuristic Whether to include local heuristic in calculation.
+ * @param writeToFile Whether to write results to file or just print to console.
  * @return - Exit status.
  */
-int solve(const std::string& filePath, int ants, float evapRate, int evaluations, double alpha, double beta, int threads, bool heuristic) {
+int solve(const std::string& filePath, int ants, float evapRate, int evaluations, double alpha, double beta, int threads, bool heuristic, bool writeToFile) {
     //Generating graph
     std::cout << "Generating Graph...                       ";
     Graph graph(filePath, alpha, beta, heuristic);
@@ -127,6 +129,20 @@ int solve(const std::string& filePath, int ants, float evapRate, int evaluations
     }
     std::cout << "(" << (int) numOfValues << ":" << bestSolutionTabuList[numOfValues-1] << ") ]\n";
 
+    // If -writeToFile true
+    if (writeToFile) {
+        std::string line = std::to_string(ants) + "," + std::to_string(heuristic)
+                + "," + std::to_string(evapRate) + "," + std::to_string(evaluations)
+                + "," + std::to_string(alpha) + "," + std::to_string(beta)
+                + "," + std::to_string(threads) + "," + std::to_string(bestSolutionCost)
+                + "," + std::to_string(diff.count()) + "\n";
+
+        std::ofstream outputFile;
+        outputFile.open("output.txt", std::ios_base::app); // Opens in 'append' mode
+        outputFile << line;
+        outputFile.close();
+    }
+
     return 0;
 }
 
@@ -151,13 +167,14 @@ int main(int argc, char **argv) {
     double beta = 1.0;
     int threads = 4;
     bool heuristic = true;
+    bool writeToFile = false;
 
     // ---- Reading in arguments from command line
 
     // If no arguments provided, uses defaults
     if (argc <= 1) {
         std::cout << "\n Running with default parameters, run with argument '-h' or '--help' for more information.\n\n";
-        return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads, heuristic);
+        return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads, heuristic, writeToFile);
     }
 
     std::string arg0 = (std::string) argv[1];
@@ -168,6 +185,7 @@ int main(int argc, char **argv) {
         std::string helpStringBody = "Possible arguments flags and values are:\n"
                                      "  -h/--help                   : Shows this text.\n"
                                      "  -filePath                   : Specifies file path to data set.\n"
+                                     "  -writeToFile [true/false]   : If results should also be writen to file or only printed to console.\n"
                                      "  -ants [int]                 : Number of ants to run on each evaluation.\n"
                                      "  -heuristic [true/false]     : Whether local heuristic will be included in graph traversal calculation.\n"
                                      "  -evapRate [double]          : Rate at which pheromone evaporates.\n"
@@ -212,14 +230,23 @@ int main(int argc, char **argv) {
                 heuristic = false;
             } else {
                 // Catches invalid arguments
-                return argumentError(argv[i], argv[i+1]);
+                std::string info = "Please choose 'true' or 'false' for this flag.\n";
+                return argumentError(argv[i], info);
+            }
+        } else if(argument == "-writeToFile") {
+            if (value == "false") {
+                writeToFile = false;
+            } else if (value != "true") {
+                // Catches invalid arguments
+                std::string info = "Please choose 'true' or 'false' for this flag.\n";
+                return argumentError(argv[i], info);
             }
         } else {
-            // Catches invalid arguments
-            return argumentError(argv[i], argv[i+1]);
+                // Catches invalid arguments
+                return argumentError(argv[i], argv[i+1]);
         }
     }
 
     // Runs solving function
-    return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads, heuristic);
+    return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads, heuristic, writeToFile);
 }

@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -isystem /home/joseph/Documents/QACO/lib/googletest/googlemock/include -isystem /home/joseph/Documents/QACO/lib/googletest/googlemock -isystem /home/joseph/Documents/QACO/lib/googletest/googletest/include -isystem /home/joseph/Documents/QACO/lib/googletest/googletest
 
-CXX_FLAGS =  -Wall -Wextra -lm -O2 -lstdc++ -O3 -DNDEBUG -fdiagnostics-color=always -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -std=c++23
+CXX_FLAGS =  -Wall -Wextra -lm -O2 -lstdc++ -flto -O3 -DNDEBUG -fdiagnostics-color=always -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -std=c++23
 

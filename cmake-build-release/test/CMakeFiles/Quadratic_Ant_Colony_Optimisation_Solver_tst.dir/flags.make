@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/joseph/Documents/QACO/./lib/googletest/googletest/include -I/home/joseph/Documents/QACO/./lib/googletest/googlemock/include -I/home/joseph/Documents/QACO/test/src -isystem /home/joseph/Documents/QACO/lib/googletest/googletest/include -isystem /home/joseph/Documents/QACO/lib/googletest/googletest
 
-CXX_FLAGS =  -Wall -Wextra -lm -O2 -lstdc++ -O3 -DNDEBUG -fdiagnostics-color=always -std=gnu++23
+CXX_FLAGS =  -Wall -Wextra -lm -O2 -lstdc++ -flto -O3 -DNDEBUG -fdiagnostics-color=always -std=gnu++23
 
