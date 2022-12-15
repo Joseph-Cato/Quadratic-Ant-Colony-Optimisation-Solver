@@ -132,15 +132,19 @@ int solve(const std::string& filePath, int ants, float evapRate, int evaluations
     // If -writeToFile true
     if (writeToFile) {
         std::string line = std::to_string(ants) + "," + std::to_string(heuristic)
-                + "," + std::to_string(evapRate) + "," + std::to_string(evaluations)
-                + "," + std::to_string(alpha) + "," + std::to_string(beta)
-                + "," + std::to_string(threads) + "," + std::to_string(bestSolutionCost)
-                + "," + std::to_string(diff.count()) + "\n";
-
-        std::ofstream outputFile;
-        outputFile.open("output.txt", std::ios_base::app); // Opens in 'append' mode
-        outputFile << line;
-        outputFile.close();
+                           + "," + std::to_string(evapRate) + "," + std::to_string(evaluations)
+                           + "," + std::to_string(alpha) + "," + std::to_string(beta)
+                           + "," + std::to_string(threads) + "," + std::to_string(bestSolutionCost)
+                           + "," + std::to_string(diff.count()) + "\n";
+        std::cout << "\n\n\n" << line << "\n\n\n";
+        std::fstream outFile;
+        outFile.open("../bin/output.txt", std::ios::app); // Opens in 'append' mode
+        if (outFile.is_open()) {
+            outFile << line;
+            outFile.close();
+        } else {
+            throw std::runtime_error("FATAL: File could not be opened.");
+        }
     }
 
     return 0;
@@ -234,9 +238,11 @@ int main(int argc, char **argv) {
                 return argumentError(argv[i], info);
             }
         } else if(argument == "-writeToFile") {
-            if (value == "false") {
+            if (value == "true") {
+                writeToFile = true;
+            } else if (value == "false") {
                 writeToFile = false;
-            } else if (value != "true") {
+            } else {
                 // Catches invalid arguments
                 std::string info = "Please choose 'true' or 'false' for this flag.\n";
                 return argumentError(argv[i], info);
