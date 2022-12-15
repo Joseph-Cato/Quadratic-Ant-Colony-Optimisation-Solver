@@ -65,7 +65,7 @@ void antSolve([[maybe_unused]] int ithread) {
  * @param writeToFile Whether to write results to file or just print to console.
  * @return - Exit status.
  */
-int solve(const std::string& filePath, int ants, float evapRate, int evaluations, double alpha, double beta, int threads, bool heuristic, bool writeToFile) {
+int solve(std::string& filePath, int ants, float evapRate, int evaluations, double alpha, double beta, int threads, bool heuristic, bool writeToFile, std::string& outFilePath) {
     //Generating graph
     std::cout << "Generating Graph...                       ";
     Graph graph(filePath, alpha, beta, heuristic);
@@ -136,14 +136,13 @@ int solve(const std::string& filePath, int ants, float evapRate, int evaluations
                            + "," + std::to_string(alpha) + "," + std::to_string(beta)
                            + "," + std::to_string(threads) + "," + std::to_string(bestSolutionCost)
                            + "," + std::to_string(diff.count()) + "\n";
-        std::cout << "\n\n\n" << line << "\n\n\n";
         std::fstream outFile;
-        outFile.open("../bin/output.txt", std::ios::app); // Opens in 'append' mode
+        outFile.open(outFilePath, std::ios::app); // Opens in 'append' mode
         if (outFile.is_open()) {
             outFile << line;
             outFile.close();
         } else {
-            throw std::runtime_error("FATAL: File could not be opened.");
+            throw std::runtime_error("FATAL: Output file could not be opened:\n" + outFilePath );
         }
     }
 
@@ -172,13 +171,14 @@ int main(int argc, char **argv) {
     int threads = 4;
     bool heuristic = true;
     bool writeToFile = false;
+    std::string outFilePath = "../bin/output.txt";
 
     // ---- Reading in arguments from command line
 
     // If no arguments provided, uses defaults
     if (argc <= 1) {
         std::cout << "\n Running with default parameters, run with argument '-h' or '--help' for more information.\n\n";
-        return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads, heuristic, writeToFile);
+        return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads, heuristic, writeToFile, outFilePath);
     }
 
     std::string arg0 = (std::string) argv[1];
@@ -188,8 +188,9 @@ int main(int argc, char **argv) {
         std::cout << "Program can be run with various optional [compiler flag] [value] pairs. If a flag and value pair is not specified default values will be used (shown below).\n";
         std::string helpStringBody = "Possible arguments flags and values are:\n"
                                      "  -h/--help                   : Shows this text.\n"
-                                     "  -filePath                   : Specifies file path to data set.\n"
+                                     "  -filePath [path]            : Specifies file path to data set.\n"
                                      "  -writeToFile [true/false]   : If results should also be writen to file or only printed to console.\n"
+                                     "  -outFilePath [path]         : Paths to file for outputs.\n"
                                      "  -ants [int]                 : Number of ants to run on each evaluation.\n"
                                      "  -heuristic [true/false]     : Whether local heuristic will be included in graph traversal calculation.\n"
                                      "  -evapRate [double]          : Rate at which pheromone evaporates.\n"
@@ -247,12 +248,15 @@ int main(int argc, char **argv) {
                 std::string info = "Please choose 'true' or 'false' for this flag.\n";
                 return argumentError(argv[i], info);
             }
-        } else {
+        } else if (argument == "-outFilePath") {
+            outFilePath = value;
+        }
+        else {
                 // Catches invalid arguments
-                return argumentError(argv[i], argv[i+1]);
+                return argumentError(argv[i], "Invalid argument.");
         }
     }
 
     // Runs solving function
-    return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads, heuristic, writeToFile);
+    return solve(filePath, ants, evapRate, evaluations, alpha, beta, threads, heuristic, writeToFile, outFilePath);
 }

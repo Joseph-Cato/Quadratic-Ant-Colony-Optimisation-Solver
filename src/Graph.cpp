@@ -59,7 +59,7 @@ Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE,
         std::string line;
         while (std::getline(file, line)) {
             if (lineCounter == 0) {
-                // Gets number of locations/facilities (only one varible is used
+                // Gets number of locations/facilities (only one variable is used
                 dataRow = lineToVector(line);
                 numberOfLocations = dataRow.front();
                 lineCounter++;
@@ -82,7 +82,7 @@ Graph::Graph(const std::string& filePath, double ALPHA_VALUE, double BETA_VALUE,
             }
         }
     } else {
-        throw std::runtime_error("FATAL: File could not be opened.");
+        throw std::runtime_error("FATAL: Dataset file could not be opened.\n" + filePath);
     }
 
     file.close();
