@@ -1,1 +1,0 @@
-/usr/bin/gcc  -Wall -Wextra -lm -O2 -lstdc++ -flto -g CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver_tst.dir/AntTest.cpp.o CMakeFiles/Quadratic_Ant_Colony_Optimisation_Solver_tst.dir/GraphTest.cpp.o -o Quadratic_Ant_Colony_Optimisation_Solver_tst  ../src/libQuadratic_Ant_Colony_Optimisation_Solver_lib.a ../lib/libgtest.a 
